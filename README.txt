@@ -1,0 +1,1 @@
+This project keeps track of my progress through the python documentation
