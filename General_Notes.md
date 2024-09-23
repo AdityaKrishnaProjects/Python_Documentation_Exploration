@@ -4,7 +4,7 @@ This file will serve as my general notes on the python documentation. The headin
 
 ##### Module 4 - More Control Flow Tools
 
-Seeing how for loops over strings works
+###### Seeing how for loops over strings works
 
 ```
 test_String = "string"
@@ -23,4 +23,6 @@ n 1
 g 1
 ```
 
-Length of each character was
+Length of each character was 1 which we would expect, and the loop iterates over each character in the string. 
+
+###### 

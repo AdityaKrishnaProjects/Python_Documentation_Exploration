@@ -1,12 +1,12 @@
-# Seeing how for loops over strings works
+# # Seeing how for loops over strings works
 
-test_String = "string"
+# test_String = "string"
 
-for letter in test_String:
-   print(letter, len(letter))
+# for letter in test_String:
+#    print(letter, len(letter))
 
-# Iterates over each character as an element of a string, also worth knowing that strings are immutable, so no use iterating over them to try to change letters
-# you would instead use a copy of the string, or construct a new string in the for loop (probably using string concatenation)
+# # Iterates over each character as an element of a string, also worth knowing that strings are immutable, so no use iterating over them to try to change letters
+# # you would instead use a copy of the string, or construct a new string in the for loop (probably using string concatenation)
 
 # The following shows how we would use for loops over a collection, without modifying the collection in the for loop (which can cause problems)
 
