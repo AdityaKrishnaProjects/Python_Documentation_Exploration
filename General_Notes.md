@@ -4,7 +4,27 @@ This file will serve as my general notes on the python documentation. The headin
 
 ##### Module 4 - More Control Flow Tools
 
-###### Seeing how for loops over strings works
+*if Statements*
+
+```
+x = int(input("Please enter an integer: "))
+
+if x < 0:
+    x = 0
+    print('Negative changed to zero')
+elif x == 0:
+    print('Zero')
+elif x == 1:
+    print('Single')
+else:
+    print('More')
+```
+
+elif is used in place of doing an else and then an indented if after if statements to avoid excessive indentation statements with further if statments.
+
+*for Statements*
+
+*Seeing how for loops over strings works*
 
 ```
 test_String = "string"
@@ -25,4 +45,3 @@ g 1
 
 Length of each character was 1 which we would expect, and the loop iterates over each character in the string. 
 
-###### 
