@@ -8,9 +8,46 @@ __Basics__
 
 In python everything is an object. When we declare a variable, we are really binding a name to an object. From then on this name will be used to refer to this object. 
 
+__Experiments with names and binding__
+
+Names and binding is a bit strange, so some experiments with basic data types should make it a bit clearer: 
+
+```
+# Experiments with names and binding
+
+# We expect this to cause a to be 1, and b to be 3, as the first line binds the object 1 to a,
+# and then we bind the object named by a to b, and then we bind 3 to b.
+a = 1
+b = a
+b = 3
+
+print("b = ", b)
+print("a = ", a)
+
+# We expect this to cause both lists to be identical: [2,2,3]
+first_List = [1,2,3]
+second_List = first_List
+second_List[0] = 2
+
+print("second list =", second_List)
+print("first list =", first_List)
+
+# We expect this to cause two different lists
+third_List = [1,2,3]
+fourth_List = third_List
+fourth_List = [3,2,1]
+
+print("fourth list =", fourth_List)
+print("third list =", third_List)
+
+# We get what we expect!
+```
+
+We see the way this works is intuitive! When we declare a variable, we start reading from the right where the object is created, and then we get the object bound to a list. For examples 1 and 3, there is nothing to explain, as new objects are created and then names are bound to them. For example 2, we see that fourth_List is bound to third_List, which is an object we have already declared. Then when we edit fourth_List we are editing the object named by both third_List and fourth_List! 
+
 __Strings and basic string functions__
 
-Strings are stored as lists, and so you can reference their entries. Strings are immutable so you can not edit them like normal lists. 
+Strings are stored as lists, and so you can reference their entries as you would in a list. Strings are immutable so you can not edit them like normal lists. 
 
 __Splicing__
 
@@ -48,7 +85,11 @@ print(test_String[-4:])
 print(test_String[:4] + test_String[4:])
 ```
 
+We see a couple things here, strings are stored as lists of characters as we know, and therefore when we splice with them we respected the indices the list data type gives us (starts at 0 and ends at n-1 of the number of items in the list). We can then think of the string as being split up with 0 being to the left of the first character and n being to the right of the last character when we use splices which always include the first index but exclude the final index. 
 
+We also have negative indices for strings, which start at -n to the left of the first character and end at -1 to the left of the final character. 
+
+We also have an empty splice, which to the left gives the first character and to the right gives the last character. 
 
 ##### Module 4 - More Control Flow Tools
 

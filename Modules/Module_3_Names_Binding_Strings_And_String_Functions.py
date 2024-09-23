@@ -1,3 +1,32 @@
+# # Experiments with names and binding
+
+# # We expect this to cause a to be 1, and b to be 3, as the first line binds the object 1 to a,
+# # and then we bind the object named by a to b, and then we bind 3 to b.
+# a = 1
+# b = a
+# b = 3
+
+# print("b = ", b)
+# print("a = ", a)
+
+# # We expect this to cause both lists to be identical: [2,2,3]
+# first_List = [1,2,3]
+# second_List = first_List
+# second_List[0] = 2
+
+# print("second list =", second_List)
+# print("first list =", first_List)
+
+# # We expect this to cause two different lists
+# third_List = [1,2,3]
+# fourth_List = third_List
+# fourth_List = [3,2,1]
+
+# print("fourth list =", fourth_List)
+# print("third list =", third_List)
+
+# # We get what we expect!
+
 # # Messing around with string splicing, and strings
 
 # test_String = "blobalob"
@@ -30,5 +59,4 @@
 
 # # This worked the way we expected it to.
 
-# Experiments with names and binding
 
