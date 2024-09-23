@@ -5,7 +5,12 @@ This file will serve as my general notes on the python documentation. The headin
 ##### Module 4 - More Control Flow Tools
 
 ```
-function test() {
-  console.log("notice the blank line before this function?");
-}
+# Seeing how for loops over strings works
+
+test_String = "string"
+
+for letter in test_String:
+   print(letter, len(letter))
+
+# Iterates over each character as an element of a string, also worth knowing that strings are immutable, so no use iterating over them to try to change letters
 ```
