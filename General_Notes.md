@@ -4,3 +4,8 @@ This file will serve as my general notes on the python documentation. The headin
 
 ##### Module 4 - More Control Flow Tools
 
+```
+function test() {
+  console.log("notice the blank line before this function?");
+}
+```
