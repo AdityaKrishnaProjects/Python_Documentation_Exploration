@@ -4,7 +4,7 @@ This file will serve as my general notes on the python documentation. The headin
 
 ##### Module 4 - More Control Flow Tools
 
-_if Statements_  
+__if Statements__  
 
 ```
 x = int(input("Please enter an integer: "))
@@ -22,9 +22,9 @@ else:
 
 elif is used in place of doing an else and then an indented if after if statements to avoid excessive indentation statements with further if statments.
 
-_for Statements_  
+__for Statements__  
 
-_Seeing how for loops over strings works_  
+__Seeing how for loops over strings works__  
 
 ```
 test_String = "string"
