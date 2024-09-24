@@ -171,7 +171,31 @@ else:
     print('More')
 ```
 
-elif is used in place of doing an else and then an indented if after if statements to avoid excessive indentation statements with further if statments.
+elif is used in place of doing an else and then an indented if after if statements to avoid excessive indentation statements with further if statments. Trying the same thing without elif: 
+
+```
+# We will now try to do the same thing but not using elif
+
+x = int(input("Give a number: "))
+
+if x < 0:
+    x = 0 
+    print('Negative changed to zero')
+else:
+    if x == 0:
+        print("Zero")
+    else: 
+        if x == 1:
+            print("Single")
+        else: 
+            print("More")
+
+# We see that the body is huge, but we still get what we expect. 
+```
+
+__Indentation for Control Flow__
+
+It is important to realise that indentation gives the control flow operator the instructions for what to do if its condition is met. With this in mind, it makes sense that the else operator is on the same line as the if operator, as if it was inside of the body of if, then else would execute after if executed, whereas we know they represent two different paths for execution of the program. This is why elif is useful, as without if the new if would be in the body of else, and then we would get cascading else operators for multiple cases. For comparing the same value to several constants or checking for specific types or attributes we might use the match statement. 
 
 __for Statements__
 
@@ -195,4 +219,28 @@ g 1
 ```
 
 Length of each character was 1 which we would expect, and the loop iterates over each character in the string. 
+
+__range()__
+
+The range() function is useful for creating arithmetic progressions to loop over. These progressions start at 0, and as a result of this fact they match the indices of a list. For example: range(10) generates 10 values, 0 through 9 the legal indices for a sequence of length 10. The specific paramters for the range function include its start, its end and the increment (or the step). It will include the start value as the first value in the progression, and the last value is omitted, as in sequence splicing. Negative indices are also accepted as in splicing. For example: 
+
+```
+# # Experiments with range() 
+
+# We expect the following to generate a list with elements from 2 to 8 but not include any odd values. 
+print(list(range(2,9,2)))
+
+# We expect the following to generate a list with elements from -100 to -10 incrementing by -10
+print(list(range(-10, -101,-10)))
+
+# We get what we expect! 
+```
+
+Here we see that the first parameter of range() is the first element of the arithmetic progression, the second parameter is the final value (excluded), and the final parameter is the increment size (or step). 
+
+range() is explicitly handy for interating over the indices of a sequence when combined with len(), as len will give you the number of elements in the sequence n, and then range will give you an arithemtic progression from 0 to n-1, which cleanly is the indices of the sequence. In these cases, people typically use the enumerate() function. 
+
+We notive that when we try to print range, we don't get a list object as we might expect. This is because range() behaves as if it is a list, but it actually is an object which returns the successive items of the desired sequence when you iterate over it, but doesn't really make a list, saving space. These objects are called iterable, suitable as a target for functions and constructs that expect something from which they can obtain successive items until the supply is exhausted. for is an example of such a construct, an example of a function that takes an iterable is sum(). 
+
+__break__
 

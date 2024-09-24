@@ -42,7 +42,6 @@
 # print(test_String[4:8])
 
 # # We expect this to be the string blob, as it ends at index 4, which is character 5
-
 # print(test_String[:4])
 
 # # We then have splicing tools, we can end the splice or start the splice with an empty character to get
@@ -62,7 +61,6 @@
 # # # Experiments with Lists, list splicing and len()
 
 # # We expect the following to empty the middle 3 entries of this 9 entry list for a copy (so both numbers and our new list should be intact)
-
 # numbers = [1,2,3,4,5,6,7,8,9]
 
 # numbers_Copy = numbers[3:6]
@@ -70,14 +68,12 @@
 # print(numbers)
 
 # # Whereas we expect the following to affect the original object bound by numbers
-
 # numbers_New = numbers
 # numbers_New.append(0)
 # print(numbers_New)
 # print(numbers)
 
 # # We expect the following to give us the number of values in the list (10)
-
 # print(len(numbers))
 
 # # We get what we expect! 
