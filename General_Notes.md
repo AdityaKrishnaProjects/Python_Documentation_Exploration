@@ -58,10 +58,10 @@ This works by taking the name binded to the object created and then applying [] 
 
 test_String = "blobalob"
 
-# This string is 8 characters long, so the list should have entried indexed from 0 to 7
-# We then can think about splcing the string as having the left of the first 'b' be index 0
+# This string is 8 characters long, so the list should have entries indexed from 0 to 7
+# We then can think about splicing the string as having the left of the first 'b' be index 0
 # and the right of the last 'b' be index 8. The heuristic for splicing is that the final 
-# piece of the index is always omitted, whereas the first element of the heursitic is always included
+# piece of the index is always omitted, whereas the first element of the index is always included
 # So even though the list's final index is 7, for splicing we will use 8 as the final index to get 
 # the end of the string. 
 
@@ -73,7 +73,7 @@ print(test_String[4:8])
 print(test_String[:4])
 
 # We then have splicing tools, we can end the splice or start the splice with an empty character to get
-# the end or the start of the string. We can also use negative entries of the string
+# the end or the start of the string. We can also use negative indices of the string
 
 # This should produce the same result as above
 print(test_String[4:])
@@ -87,9 +87,71 @@ print(test_String[:4] + test_String[4:])
 
 We see a couple things here, strings are stored as lists of characters as we know, and therefore when we splice with them we respected the indices the list data type gives us (starts at 0 and ends at n-1 of the number of items in the list). We can then think of the string as being split up with 0 being to the left of the first character and n being to the right of the last character when we use splices which always include the first index but exclude the final index. 
 
-We also have negative indices for strings, which start at -n to the left of the first character and end at -1 to the left of the final character. 
+We also have negative indices for strings, which start at -n to the left of the first character and end at -1 to the left of the final character. A good heuristic is you will get n values if you input -n as your negative index. 
 
 We also have an empty splice, which to the left gives the first character and to the right gives the last character. 
+
+__Lists__
+
+Lists (like all other sequence types) can be indexed and spliced. Lists also suppport concatenation. Lists, unlike strings, are mutable. You can also add new items to the list using list.append(). 
+
+Simple assignment doesn't copy data, so as we have seen above, when you bind a name 'new_Name' to a name 'old_Name' that is already bound to an object, 'new_Name' will simply be bound to the extant list object named by 'old_Name'. To counteract this we can use the slice operation ([:]). 
+
+The following experiments elucidate some behaviors of lists: 
+
+```
+# We expect the following to empty the middle 3 entries of this 9 entry list for a copy (so both numbers and our new list should be intact)
+
+numbers = [1,2,3,4,5,6,7,8,9]
+
+numbers_Copy = numbers[3:6]
+print(numbers_Copy)
+print(numbers)
+
+# Whereas we expect the following to affect the original object bound by numbers
+
+numbers_New = numbers
+numbers_New.append(0)
+print(numbers_New)
+print(numbers)
+
+# We expect the following to give us the number of values in the list (10)
+
+print(len(numbers))
+
+# We get what we expect! 
+```
+
+As we can see we the results are what we expect. List assignment binds the new name to the old object, and to get around this we can use splices with empty indices to get a copy of the list. Finally length works as we expect and gives us the number of values in the list (and not the final index which is n-1, where n is the number of values in the list).
+
+A good thing to note is that lists can nest other lists, and the way we access entries is by doubling up on the indices like this: 
+
+```
+# We expect this to give us 5
+numbers_Nested = [[1,2,3],[4,5,6],[7,8,9]]
+
+print(numbers_Nested[1][1])
+
+# We get what we expect!
+```
+
+The first index gives us the value in the outermost list, which we would expect, and then we must specify further if we want a specific element of the list that we just indexed, then we must provide another index for that value (if we don't then it will just return the list at the index given for our outermost list).
+
+__Indentation__
+
+This is critically important to the syntax of python. Indentation is python's way of grouping statements. The body of any control flow operator will be indented. 
+
+__Appendix__
+
+You can assign multiple variables in one line in python 
+
+```
+a, b = 1, 2
+```
+
+This will give us a = 1 and b = 2. Python evaluates the right hand side first, and it reads the right hand side from left to right (which is perfect as we can have operations complete on the righthand side before assignment to a name, and these operations will occur in an expected order of operations).
+
+In python any non-zero integer value is true, whereas zero is false. In any sequence anything with a non-zero length is true, whereas empty sequences are false. 
 
 ##### Module 4 - More Control Flow Tools
 
@@ -133,4 +195,3 @@ g 1
 ```
 
 Length of each character was 1 which we would expect, and the loop iterates over each character in the string. 
-

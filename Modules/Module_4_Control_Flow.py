@@ -1,4 +1,4 @@
-# # Seeing how for loops over strings works
+# # # Seeing how for loops over strings works
 
 # test_String = "string"
 
@@ -28,4 +28,4 @@
 
 # # We see that both methods work, I think I prefer creating a new collection, rather than iterating over a copy. Keeps more of the original data intact that way
 
-
+# # # Experiments with break
