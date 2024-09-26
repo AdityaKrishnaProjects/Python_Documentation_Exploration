@@ -139,7 +139,7 @@ The first index gives us the value in the outermost list, which we would expect,
 
 __Indentation__
 
-This is critically important to the syntax of python. Indentation is python's way of grouping statements. The body of any control flow operator will be indented. 
+This is critically important to the syntax of python. Indentation is python's way of grouping statements. The body of any control flow construct will be indented. 
 
 __Appendix__
 
@@ -195,7 +195,7 @@ else:
 
 __Indentation for Control Flow__
 
-It is important to realise that indentation gives the control flow operator the instructions for what to do if its condition is met. With this in mind, it makes sense that the else operator is on the same line as the if operator, as if it was inside of the body of if, then else would execute after if executed, whereas we know they represent two different paths for execution of the program. This is why elif is useful, as without if the new if would be in the body of else, and then we would get cascading else operators for multiple cases. For comparing the same value to several constants or checking for specific types or attributes we might use the match statement. 
+It is important to realise that indentation gives the control flow construct the instructions for what to do if its condition is met. With this in mind, it makes sense that the else construct is on the same line as the if construct, as if it was inside of the body of if, then else would execute after if executed, whereas we know they represent two different paths for execution of the program. This is why elif is useful, as without if the new if would be in the body of else, and then we would get cascading else constructs for multiple cases. For comparing the same value to several constants or checking for specific types or attributes we might use the match statement. 
 
 __for Statements__
 
@@ -242,5 +242,84 @@ range() is explicitly handy for interating over the indices of a sequence when c
 
 We notive that when we try to print range, we don't get a list object as we might expect. This is because range() behaves as if it is a list, but it actually is an object which returns the successive items of the desired sequence when you iterate over it, but doesn't really make a list, saving space. These objects are called iterable, suitable as a target for functions and constructs that expect something from which they can obtain successive items until the supply is exhausted. for is an example of such a construct, an example of a function that takes an iterable is sum(). 
 
-__break__
+__break and else in for or while loops__
+
+The break statement breaks out of the body of the innermost enclosing for or while loop. A for or while loop can also include an else clause. In a for loop else is executed after the loop reaches its final iteration, in a while loop else is executed after the loop's condition becomes false. In either clause the else is not executed if the loop is terminated by a break. 
+
+The following is an illustrative example: 
+
+```
+# We expect the following range function to start with 2 and give consecutive integers till 9, so our outermost for loop should conclude after 7 loops
+# inside our for loop the integer is passed to another for loop which runs with a range from (2,n). We expect the first integer to terminate the loop
+# immediately and trigger the else clause, whereas the next numbers will break out of the for loop so long as there is a number from 2 to n that cleanly 
+# divides n without integer (% = 0). We will then return n = x * n//x which should give x multiplied by n/x (we use floor division but we shouldn't need to)
+for n in range(2, 10):
+    for x in range(2, n):
+        if n % x == 0:
+            print(n, 'equals', x, '*', n//x)
+            break
+    else:
+        # loop fell through without finding a factor
+        print(n, 'is a prime number')
+
+# We get what we expect!
+
+# The following is the same code but without floor division, we expect the same result. 
+for n in range(2, 10):
+    for x in range(2, n):
+        if n % x == 0:
+            print(n, 'equals', x, '*', n/x)
+            break
+    else:
+        # loop fell through without finding a factor
+        print(n, 'is a prime number')
+
+# We get what we expect, however floats are returned instead of integers as we used normal division! 
+```
+
+We see that break takes us out of for loops, which stops the else condition from triggering, we also see that range when given an index where the start and end are the same returns no value and the for loop immediately terminates, triggering the else condition. In review, a for or while clause's else triggers when no break occurs. The continue construct is like break but instead it causes the next iteration of the loop to occur.
+
+__pass__ 
+
+The pass statement does nothing. It can be used when a statement is required syntactically but the program requires no action. For example we might have an if where we want an else, but we don't want the else to do anything. 
+
+__match__ 
+
+The match statement is a pattern matching construct that is superficially similar to switch in C, but is more like other pattern matching constructs in other languages. Only the first pattern it matches gets executed and it can also extract components from the value it is passed (sequence elements or object attributes). We can use _ as a wild card variable which will never fail to match. If no case matches none of the branches are executed. 
+
+The following example shows some basic comparison of string literals:
+
+```
+# We expect the following to ask for a string, and then return Wrong unless the string inputted is "the exact word I was thinking of"
+x = input("Give me a string now \n")
+
+match x:
+    case "the exact word I was thinking of":
+        print("You guessed the exact word I was thinking of")
+    case _:
+        print("Wrong")
+
+# We get what we expect! 
+```
+
+We see that match works the way we expect. What remains to be seen is how the variables in match are managed, are they both names and variables? Or are they names with no object attached?
+
+We can combine several literals in a single case pattern using the or operator "|". We can bind variables using match statements, as we see in the following example: 
+
+```
+# point is an (x, y) tuple
+match point:
+    case (0, 0):
+        print("Origin")
+    case (0, y):
+        print(f"Y={y}")
+    case (x, 0):
+        print(f"X={x}")
+    case (x, y):
+        print(f"X={x}, Y={y}")
+    case _:
+        raise ValueError("Not a point")
+```
+
+Here we have an object point that is passed to match, this object is an x,y tuple, and we have cases that specifically bind the values passed by point to names x and y. This answers our question above and tells us match when comparing can bind a passed object to a new name. When comparing literals, we don't have to declare a name and then an object, as our literals are our objects. 
 

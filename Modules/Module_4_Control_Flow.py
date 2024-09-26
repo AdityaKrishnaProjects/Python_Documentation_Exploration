@@ -73,5 +73,46 @@
 
 # # We get what we expect! 
 
-# # Experiments with break
+# # # Experiments with break and else in for or while loops
+
+# # We expect the following range function to start with 2 and give consecutive integers till 9, so our outermost for loop should conclude after 7 loops
+# # inside our for loop the integer is passed to another for loop which runs with a range from (2,n). We expect the first integer to terminate the loop
+# # immediately and trigger the else clause, whereas the next numbers will break out of the for loop so long as there is a number from 2 to n that cleanly 
+# # divides n without integer (% = 0). We will then return n = x * n//x which should give x multiplied by n/x (we use floor division but we shouldn't need to)
+# for n in range(2, 10):
+#     for x in range(2, n):
+#         if n % x == 0:
+#             print(n, 'equals', x, '*', n//x)
+#             break
+#     else:
+#         # loop fell through without finding a factor
+#         print(n, 'is a prime number')
+
+# # We get what we expect!
+
+# # The following is the same code but without floor division, we expect the same result. 
+# for n in range(2, 10):
+#     for x in range(2, n):
+#         if n % x == 0:
+#             print(n, 'equals', x, '*', n/x)
+#             break
+#     else:
+#         # loop fell through without finding a factor
+#         print(n, 'is a prime number')
+
+# # We get what we expect, however floats are returned instead of integers as we used normal division! 
+
+# # Experiments with match
+
+# We expect the following to ask for a string, and then return Wrong unless the string inputted is "the exact word I was thinking of"
+x = input("Give me a string now \n")
+
+match x:
+    case "the exact word I was thinking of":
+        print("You guessed the exact word I was thinking of")
+    case _:
+        print("Wrong")
+
+# We get what we expect! 
+
 
