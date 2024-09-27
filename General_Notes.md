@@ -277,7 +277,42 @@ for n in range(2, 10):
 # We get what we expect, however floats are returned instead of integers as we used normal division! 
 ```
 
-We see that break takes us out of for loops, which stops the else condition from triggering, we also see that range when given an index where the start and end are the same returns no value and the for loop immediately terminates, triggering the else condition. In review, a for or while clause's else triggers when no break occurs. The continue construct is like break but instead it causes the next iteration of the loop to occur.
+We see that break takes us out of for loops, which stops the else condition from triggering, we also see that range when given an index where the start and end are the same returns no value and the for loop immediately terminates, triggering the else condition. In review, a for or while clause's else triggers when no break occurs. 
+
+__continue__
+
+continue is useful because it allows you to stop the current path of execution and restart the loop you are in without using many elses. Example shown below: 
+
+```
+# The following should tell us the first prime numbers n is divisible by
+for n in range(1, 11):
+    if n % 2 == 0:
+        print("2 is the first prime number that divides", n)
+        continue
+    if n % 3 == 0:
+        print("3 is the first prime number that divides", n)
+        continue
+    if n % 5 == 0: 
+        print("5 is the first prime number that divides", n)
+        continue
+    else:
+        print(n, "is prime")
+
+# The following should tell us the first prime numbers n is divisible by
+for n in range(11):
+    if n % 2 == 0:
+        print("2 is the first prime number that divides", n)
+    else:
+        if n % 3 == 0:
+            print("3 is the first prime number that divides", n)
+        else:
+            if n % 5 == 0: 
+                print("5 is the first prime number that divides", n)
+            else:
+                print(n, "is prime")
+```
+
+With cascading if statements we would get every prime number that divides n, not only the first prime number that divides n. With cascading statements it is a very messy piece of code. We can't use break as that would break us out of the for loop. 
 
 __pass__ 
 

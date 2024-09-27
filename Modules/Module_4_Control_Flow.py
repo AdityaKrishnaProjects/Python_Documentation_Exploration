@@ -73,7 +73,7 @@
 
 # # We get what we expect! 
 
-# # # Experiments with break and else in for or while loops
+# # # Experiments with break, continue and else in for or while loops
 
 # # We expect the following range function to start with 2 and give consecutive integers till 9, so our outermost for loop should conclude after 7 loops
 # # inside our for loop the integer is passed to another for loop which runs with a range from (2,n). We expect the first integer to terminate the loop
@@ -102,17 +102,48 @@
 
 # # We get what we expect, however floats are returned instead of integers as we used normal division! 
 
-# # Experiments with match
+# # The following two code snippets will show why continue is useful in place of better control flow, break or else
 
-# We expect the following to ask for a string, and then return Wrong unless the string inputted is "the exact word I was thinking of"
-x = input("Give me a string now \n")
+# # The following should tell us the first prime numbers n is divisible by
+# for n in range(1, 11):
+#     if n % 2 == 0:
+#         print("2 is the first prime number that divides", n)
+#         continue
+#     if n % 3 == 0:
+#         print("3 is the first prime number that divides", n)
+#         continue
+#     if n % 5 == 0: 
+#         print("5 is the first prime number that divides", n)
+#         continue
+#     else:
+#         print(n, "is prime")
 
-match x:
-    case "the exact word I was thinking of":
-        print("You guessed the exact word I was thinking of")
-    case _:
-        print("Wrong")
+# # The following should tell us the first prime numbers n is divisible by
+# for n in range(11):
+#     if n % 2 == 0:
+#         print("2 is the first prime number that divides", n)
+#     else:
+#         if n % 3 == 0:
+#             print("3 is the first prime number that divides", n)
+#         else:
+#             if n % 5 == 0: 
+#                 print("5 is the first prime number that divides", n)
+#             else:
+#                 print(n, "is prime")
 
-# We get what we expect! 
+# # Both programs execute the same algorithm, but one is far simpler to read
+
+# # # Experiments with match
+
+# # We expect the following to ask for a string, and then return Wrong unless the string inputted is "the exact word I was thinking of"
+# x = input("Give me a string now \n")
+
+# match x:
+#     case "the exact word I was thinking of":
+#         print("You guessed the exact word I was thinking of")
+#     case _:
+#         print("Wrong")
+
+# # We get what we expect! 
 
 
