@@ -1,14 +1,14 @@
-## Preface
+# Preface
 
 This file will serve as my general notes on the python documentation. The headings of this markdown file will correspond to the different chapters in the table of contents for Python Documentation as of September 2024, starting on Module 3. Within this note I will reference the modules and experiments I did with them, the code for these modules I experimented with and the results of these experiments will be housed in the modules folder.
 
-### Module 3 - An Informal Introduction to Python
+## Module 3 - An Informal Introduction to Python
 
-__Basics__
+### Basics
 
 In python everything is an object. When we declare a variable, we are really binding a name to an object. From then on this name will be used to refer to this object. 
 
-__Experiments with names and binding__
+### Experiments with names and binding
 
 Names and binding is a bit strange, so some experiments with basic data types should make it a bit clearer: 
 
@@ -45,11 +45,11 @@ print("third list =", third_List)
 
 We see the way this works is intuitive! When we declare a variable, we start reading from the right where the object is created, and then we get the object bound to a list. For examples 1 and 3, there is nothing to explain, as new objects are created and then names are bound to them. For example 2, we see that fourth_List is bound to third_List, which is an object we have already declared. Then when we edit fourth_List we are editing the object named by both third_List and fourth_List! 
 
-__Strings and basic string functions__
+### Strings 
 
 Strings are stored as lists, and so you can reference their entries as you would in a list. Strings are immutable so you can not edit them like normal lists. 
 
-__Splicing__
+### Splicing
 
 This works by taking the name binded to the object created and then applying [] with indices to this name. Example: 
 
@@ -91,7 +91,7 @@ We also have negative indices for strings, which start at -n to the left of the 
 
 We also have an empty splice, which to the left gives the first character and to the right gives the last character. 
 
-__Lists__
+### Lists
 
 Lists (like all other sequence types) can be indexed and spliced. Lists also suppport concatenation. Lists, unlike strings, are mutable. You can also add new items to the list using list.append(). 
 
@@ -137,11 +137,11 @@ print(numbers_Nested[1][1])
 
 The first index gives us the value in the outermost list, which we would expect, and then we must specify further if we want a specific element of the list that we just indexed, then we must provide another index for that value (if we don't then it will just return the list at the index given for our outermost list).
 
-__Indentation__
+### Indentation
 
 This is critically important to the syntax of python. Indentation is python's way of grouping statements. The body of any control flow construct will be indented. 
 
-__Appendix__
+### Appendix
 
 You can assign multiple variables in one line in python 
 
@@ -153,9 +153,9 @@ This will give us a = 1 and b = 2. Python evaluates the right hand side first, a
 
 In python any non-zero integer value is true, whereas zero is false. In any sequence anything with a non-zero length is true, whereas empty sequences are false. 
 
-### Module 4 - More Control Flow Tools
+## Module 4 - More Control Flow Tools
 
-__if Statements__
+### If statements
 
 ```
 x = int(input("Please enter an integer: "))
@@ -193,13 +193,13 @@ else:
 # We see that the body is huge, but we still get what we expect. 
 ```
 
-__Indentation for Control Flow__
+### Indentation for control flow
 
 It is important to realise that indentation gives the control flow construct the instructions for what to do if its condition is met. With this in mind, it makes sense that the else construct is on the same line as the if construct, as if it was inside of the body of if, then else would execute after if executed, whereas we know they represent two different paths for execution of the program. This is why elif is useful, as without if the new if would be in the body of else, and then we would get cascading else constructs for multiple cases. For comparing the same value to several constants or checking for specific types or attributes we might use the match statement. 
 
-__for Statements__
+### for Statements
 
-__Seeing how for loops over strings works__
+### Seeing how for loops over strings works
 
 ```
 test_String = "string"
@@ -220,7 +220,7 @@ g 1
 
 Length of each character was 1 which we would expect, and the loop iterates over each character in the string. 
 
-__range()__
+### Range()
 
 The range() function is useful for creating arithmetic progressions to loop over. These progressions start at 0, and as a result of this fact they match the indices of a list. For example: range(10) generates 10 values, 0 through 9 the legal indices for a sequence of length 10. The specific paramters for the range function include its start, its end and the increment (or the step). It will include the start value as the first value in the progression, and the last value is omitted, as in sequence splicing. Negative indices are also accepted as in splicing. For example: 
 
@@ -242,7 +242,7 @@ range() is explicitly handy for interating over the indices of a sequence when c
 
 We notive that when we try to print range, we don't get a list object as we might expect. This is because range() behaves as if it is a list, but it actually is an object which returns the successive items of the desired sequence when you iterate over it, but doesn't really make a list, saving space. These objects are called iterable, suitable as a target for functions and constructs that expect something from which they can obtain successive items until the supply is exhausted. for is an example of such a construct, an example of a function that takes an iterable is sum(). 
 
-__break and else in for or while loops__
+### Break and else in for or while loops
 
 The break statement breaks out of the body of the innermost enclosing for or while loop. A for or while loop can also include an else clause. In a for loop else is executed after the loop reaches its final iteration, in a while loop else is executed after the loop's condition becomes false. In either clause the else is not executed if the loop is terminated by a break. 
 
@@ -279,7 +279,7 @@ for n in range(2, 10):
 
 We see that break takes us out of for loops, which stops the else condition from triggering, we also see that range when given an index where the start and end are the same returns no value and the for loop immediately terminates, triggering the else condition. In review, a for or while clause's else triggers when no break occurs. 
 
-__continue__
+### Continue
 
 continue is useful because it allows you to stop the current path of execution and restart the loop you are in without using many elses. Example shown below: 
 
@@ -314,11 +314,11 @@ for n in range(11):
 
 With cascading if statements we would get every prime number that divides n, not only the first prime number that divides n. With cascading statements it is a very messy piece of code. We can't use break as that would break us out of the for loop. 
 
-__pass__ 
+### pass
 
 The pass statement does nothing. It can be used when a statement is required syntactically but the program requires no action. For example we might have an if where we want an else, but we don't want the else to do anything. 
 
-__match__ 
+### match
 
 The match statement is a pattern matching construct that is superficially similar to switch in C, but is more like other pattern matching constructs in other languages. Only the first pattern it matches gets executed and it can also extract components from the value it is passed (sequence elements or object attributes). We can use _ as a wild card variable which will never fail to match. If no case matches none of the branches are executed. 
 
@@ -356,5 +356,35 @@ match point:
         raise ValueError("Not a point")
 ```
 
-Here we have an object point that is passed to match, this object is an x,y tuple, and we have cases that specifically bind the values passed by point to names x and y. This answers our question above and tells us match when comparing can bind a passed object to a new name. When comparing literals, we don't have to declare a name and then an object, as our literals are our objects. 
+Here we have an object point that is passed to match, this object is an x,y tuple, and we have cases that specifically bind the values passed by this object 'point' to names x and y. This answers our question above and tells us match when comparing can bind a passed object or its values to (a) new name(s). When comparing literals, we don't have to declare a name and then bind that name to an object, as our literals are our objects. 
+
+If you are using classes to structure your data (and therefore the expression you are giving to match is a class), then when you are passing the class to match, on each case statement you can simply use the class name followed by an argument list resembling a constructor, but with the ability to capture attributes into variables. This is illustrated by the following example: 
+
+```
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+def where_is(point):
+    match point:
+        case Point(x=0, y=0):
+            print("Origin")
+        case Point(x=0, y=y):
+            print(f"Y={y}")
+        case Point(x=x, y=0):
+            print(f"X={x}")
+        case Point():
+            print("Somewhere else")
+        case _:
+            print("Not a point")
+```
+
+In the above example, we see that case accepts Point, the name of our class, and then we have our comparisons occuring over literals in some cases and variables in others. In the case where they are occuring over variables our statemnt of case specifies the pattern we are looking for (e.g. (x=x, y=0)), and then we compare the passed object to this and execute the code in the body of the first case statement that is matched. 
+
+We can add if clauses to the case statements, these are known as "gaurds". The value capture of the comparison occurs before the gaurd is evaluated. When using the or operator "|" we must have our alternatives bind the same variable. This is because we don't want the variable which is to be bound to be unclear. We can use the 'as' expression in case statements to bind whatever pattern is on its left side to the name on the right side. This is useful as if we have a match statement that accepts many different literals for its second value, we want to be able to refer to the value that was matched.
+
+### Defining Functions
+
+The keyword def introduces a function definition. It must be followed by the function name and the parenthesized list of formal parameters. The statements that form the body of the function start at the next line and must be indented. The first statement can be a string literal, this string is the function's documentation string or docstring. The parameters (arguments) to a function call are introduced in the local symbol table of the function when the function is called. Arguments are passed using a call by value, where the value is always an object reference, not the value of the object. When a function calls another function or calls itself recursively, a new local symbol table is created for that call. A function definition associates the function name with the function object in the current symbol table, this means that you can associate a different name with this function object and access the function. 
 

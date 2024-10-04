@@ -146,4 +146,15 @@
 
 # # We get what we expect! 
 
+# # Expeirments with Defining Functions
 
+# We expect the following to print a list of fibonacci numbers up to n
+def fib(n):
+    """Print a Fibonacci series up to n"""
+    a, b = 0,1
+    while a < n:
+        print(a, end=" ")
+        a, b = b, a+b
+    print()
+
+fib(2000)
