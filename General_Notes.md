@@ -388,3 +388,168 @@ We can add if clauses to the case statements, these are known as "gaurds". The v
 
 The keyword def introduces a function definition. It must be followed by the function name and the parenthesized list of formal parameters. The statements that form the body of the function start at the next line and must be indented. The first statement can be a string literal, this string is the function's documentation string or docstring. The parameters (arguments) to a function call are introduced in the local symbol table of the function when the function is called. Arguments are passed using a call by value, where the value is always an object reference, not the value of the object. When a function calls another function or calls itself recursively, a new local symbol table is created for that call. A function definition associates the function name with the function object in the current symbol table, this means that you can associate a different name with this function object and access the function. 
 
+Functions without return statements return a value called None, a built in name. Writing the value None is normally supressed if it would be the only value written, but if you want to see if you can print the result of a function with no return statement. You can also write return without an expression after it, or fall of the end of a function without a return statement to have a function return None. 
+
+Methods are functions that belong to an object. Methods are function specific, and are called using the obj.methodname syntax. Different types define different methods, and different types may have methods with the same name without causing ambiguity. 
+
+As an example the following uses the method append() for list objects, and uses some function calls: 
+
+```
+# We expect the following functions to return a random integer from the requested indices in a list object
+import random
+
+def list_Containg_One_Random_Integer(lower_Bound, upper_Bound):
+    "This function returns a random integer from the requested indices in a list object"
+    dummy_List = []
+
+    dummy_List.append(random.randrange(lower_Bound,upper_Bound+1))
+
+    return dummy_List
+
+def list_Containg_One_Random_Integer_Without_Using_List_Methods(lower_Bound, upper_Bound):
+    "This function returns a random integer from the requested indices in a list object, but it doesn't use the append method"
+    dummy_List = []
+
+    dummy_List = dummy_List + [random.randrange(lower_Bound,upper_Bound+1)]
+
+    return dummy_List
+
+# We expect the following code to give us two lists with 100 random integers from 1 to 10
+dummy_List = []
+
+for i in range(100):
+    dummy_List.append(list_Containg_One_Random_Integer(1,10))
+
+print(dummy_List, "\n", "\n")
+print(len(dummy_List), "\n", "\n")
+
+dummy_List_Created_Without_Using_List_Methods = []
+
+for i in range(100):
+    dummy_List_Created_Without_Using_List_Methods.append(list_Containg_One_Random_Integer_Without_Using_List_Methods(1,10))
+
+print(dummy_List_Created_Without_Using_List_Methods, "\n", "\n")
+print(len(dummy_List_Created_Without_Using_List_Methods), "\n", "\n")
+```
+
+We get a couple of the results we were looking for: local variables can be named the same thing as other local variables in other functions and no problems arise, similarly when we call our function we notice the append method works the same as appending manually. 
+
+### More on Defining Functions
+
+#### Default values
+
+It is possible to define functions with a variable number of arguments. There are three forms, which can be combined. 
+
+Firstly, you can establish default values which allow the function to be called without those arguments as it will instantiate with default values. 
+
+An edited version of the function written above with default values added is given below: 
+
+```
+# We expect the following to be callable without giving arguments
+import random
+
+def list_Containing_One_Random_Integer(lower_Bound=1, upper_Bound=10):
+    "This function returns a random integer from the requested indices in a list object, with it's default values being 1-10"
+    dummy_List = []
+
+    dummy_List.append(random.randrange(lower_Bound,upper_Bound+1))
+
+    return dummy_List
+
+print(list_Containing_One_Random_Integer())
+```
+
+This works the way we expect it to. 
+
+The default values are evaluated at the point of function definition in the defining scope of the function. So something like: 
+
+```
+# We expect the following code snippet to print 0
+i = 0
+
+def bad_Function(input=i):
+    "This function prints the input, and takes i as the default value"
+    print(input)
+
+i = 2
+
+bad_Function()
+```
+
+We see that we get what expect! As the name i was bound to the object 0 when the function was defined in the program, the default value was bound to 0 as well. Even though the function was called after the definition of i was changed, this did not change the default value. 
+
+The default value is evaluated only once. If we have a default value, that is then used and modified within the function, then on successive calls of that function that default value will not be what it was initially, it will be whatever the object's final state was at the end of the last function call. An illustrative example of that is in the following code snippet: 
+
+```
+# We expect the following to print three successive lists, each containing the elements of the last. 
+def f(a, L=[]):
+    L.append(a)
+    return L
+
+print(f(1))
+print(f(2))
+print(f(3))
+```
+
+We get what we expect! The default variable L, is changed in the first function call to include the integer 1 as the first value in the list it refers to. This then means in the subsequent function call, we get a list with two values. 
+
+If we don't want the default value to be shared between subsequent function calls, we would need to make the default value equal to None, and then we would have to have a conditional in the function that will set None to the default value we want to share between calls. This is illustrated below in a modified version of the above function: 
+
+```
+# We expect the following to print three successive lists, each containing only one element
+def f(a, L=None):
+    if L is None:
+        L = []
+    L.append(a)
+    return L
+
+print(f(1))
+print(f(2))
+print(f(3))
+```
+
+We get the behaviour we expect! 
+
+#### Keyword Arguments
+
+Keyword arguments are a way in which functions can be called. You specify the name of the argument in the parameters, and then set that argument equal to the value you want to pass to the function. After calling keyword arguments, you can not pass values without specifying the keyword as in positional arguments. You can not provide a duplicate value for the same keyword either. Order is not important for keyword arguments. 
+
+When a final formal parameter of the form **name is present, it receives a dictionary containing all keyword arguments except for those corresponding to a formal parameter. This can be combined with the formal parameter *name which receives a tuple containing all the positional arguments beyond the formal parameter list. *name must occur before **name. This means we can have a function that accepts an arbitrary number of arguments and kwargs, and the arguments beyond the formal parameters that we specify will be stored in a list referred to by the name after the asterisk in *name1 and the kwards will similarly be stored in a dictionary referred to by the name after the asterisk in **name2. 
+
+An example is shown in the following code snippet: 
+
+```
+# The following function should accept an arbitrary number of arguments and 
+# kwargs, after having accepted it's stipulated arguments
+def client_Requests(items_Needed, *misc_Requests, **client_Details):
+    """This function should accept the items a client needs, their arbitrary 
+    requests, and their details. It should then print their details, and 
+    if the order can be handled, return the order details"""
+    
+    if items_Needed > 10:
+        print("Order rejected! Too many items!")
+        return
+
+    if client_Details == {}:
+        print("No client details!")
+    else:
+        print("Client details: ")
+        for dt in client_Details:
+            print(dt, ":", client_Details[dt])
+    
+    print("-" * 40)
+
+    print("This order contains", items_Needed, "items")
+    print("This order contains the following requests:")
+    for req in misc_Requests:
+        print(req)
+
+client_Requests(10, "quick", name="Gorbachev", wealth_status="Truly very wealthy")
+
+client_Requests(100, name="Greedy Goblin")
+```
+
+We see here we get our positional arguments that are unspecified by the function stored in a list named misc_Requests, and we get our kwargs stored in a dictionary named client_Details. 
+
+#### Special Parameters
+
