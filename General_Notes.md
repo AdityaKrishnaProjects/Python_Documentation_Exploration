@@ -625,6 +625,77 @@ Annotations can be made to both the arguments and the return value for the funct
 
 4 spaces for indentation. For functions use names like lowercase_with_underscores, and for classes use names like UpperCamelCase. 
 
-## Module 5
+## Module 5 - Data Structures 
+
+### List methods 
+
+Methods are functions associated with a specific class. 
+
+`list.append(x)` adds an item to the end of the list, equivalent to `a[len(a):] = [x]`.
+
+`list.extend(iterable)` extends the list by appending all the items from the iterable. Equivalent to `a[len(a):] = iterable`.
+
+`list.insert(i, x)` inserts an item at a given position. The first argument is the index of the element before which to insert, so `a.insert(0, x)` inserts at the front of the list, and `a.insert(len(a), x)` is equivalent to `a.append(x)`.
+
+`list.remove(x)` removes the first item from the list whose value is equal to x. It raises a ValueError if there is no such item.
+
+`list.pop([i])` removes the item at the given position in the list, and return it. If no index is specified, `a.pop()` removes and returns the last item in the list. It raises an IndexError if the list is empty or the index is outside the list range.
+
+`list.clear()` removes all items from the list. Equivalent to `del a[:]`.
+
+`list.index(x[, start[, end]])` returns zero-based index in the list of the first item whose value is equal to x. Raises a ValueError if there is no such item.
+
+The optional arguments start and end are interpreted as in the slice notation and are used to limit the search to a particular subsequence of the list. The returned index is computed relative to the beginning of the full sequence rather than the start argument.
+
+`list.count(x)` returns the number of times x appears in the list.
+
+`list.sort(*, key=None, reverse=False)` sorts the items of the list in place (the arguments can be used for sort customization, see sorted() for their explanation).
+
+`list.reverse()` reverses the elements of the list in place.
+
+`list.copy()` returns a shallow copy of the list. Equivalent to `a[:]`.
+
+Some data types don't have a defined ordering, and similarly mixed data types often don't have defined orders, so those lists wouldn't be sortable. Methods that just modify the list don't return anything. This is a design decision in python. 
+
+### Using Lists as Stacks
+
+To use lists as stacks where the last item added is the first item retrieved, use `list.append()` and `list.pop()`. 
+
+### Using Lists as Queues
+
+It is also possible to use lists as queues, where the first element added is the first retrieved. Here you would use `list.append()` and `list.pop([0])`, but this is slow as it inserts and pops shifting all other elements over by 1. Instead use `collections.deque`, which was designed to have fast appends and pops from both ends. For example: 
+
+```
+# # Experiments with using lists as queues
+
+# This code snippet should remove and add items to the front of the list
+from collections import deque
+queue = deque(["Eric", "John", "Michael"])
+queue.append("Terry")           # Terry arrives
+queue.append("Graham")          # Graham arrives
+
+print(queue) # We expect to see Terry and Graham at the end of the queue
+
+print(queue.popleft())                 # The first to arrive now leaves
+
+print(queue.popleft())                 # The second to arrive now leaves
+
+print(queue)                           # Remaining queue in order of arrival
+
+queue.appendleft('John')
+
+print(queue)                           # John is added to start of queue
+
+# We get what we expect! 
+```
+
+Here we use `deque.popleft()` to remove from the left and `dequeu.appendleft()` to add to the left. 
+
+### List Comprehensions
+
+
+
+
+
 
 
