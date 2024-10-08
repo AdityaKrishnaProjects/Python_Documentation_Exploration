@@ -553,3 +553,11 @@ We see here we get our positional arguments that are unspecified by the function
 
 #### Special Parameters
 
+/ and * are special parameters that indicate the kind of parameter and how the arguments may be passed to the function. / means positional only, * means keyword only, and neither means both are acceptable. Arguments linearly preceeding the / argument are positional only, arguments linearly succeeding * are keyword only. Keyword only arguments are also referred to as named parameters. 
+
+The positional only parameters are useful as if you have a double star argument and an unspecified argument, it would typically be impossible to have the double star argument accept a kwarg whose key is the name of the unspecified argument, however using positional only, you can specify the first argument as positional only, and then have the second argument have a key that is the name of the first argument. In other words, the names of positional-only parameters can be used in **kwds without ambiguity.
+
+### Arbitrary Argument Lists
+
+
+
