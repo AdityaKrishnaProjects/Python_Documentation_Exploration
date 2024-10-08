@@ -321,3 +321,39 @@
 
 # # Works the way we expect! 
 
+# # # Lambda expressions
+
+# # We expect the following code snippet to define a function that accepts 
+# # a lambda expression as an argument.  
+# def sort_Tuples_Check_For_Duplicates(*, key_value=lambda x: x[0], tuples):
+#     """This function accepts a key value (a function) which will
+#     determine what the key for our list sort will be. It also accepts the tuples
+#     that will be sorted, and then the sorted index of the tuples will be compared
+#     to see if there are any duplicate values. The default key value will be 
+#     a function that sorts by the first value in the tuple."""
+    
+#     # Sort the list using the provided key function
+#     tuples.sort(key=key_value)
+
+#     # Compare adjacent elements to find duplicates
+#     for i in range(len(tuples) - 1):
+#         # Compare the elements based on the key value
+#         if key_value(tuples[i]) == key_value(tuples[i + 1]):
+#             return "duplicate found"
+    
+#     return "no duplicate found"
+
+# # Test Cases
+# apples = [('b', 'e'), ('g', 'h'), ('a', 'a'), ('f', 'd'), ('c', 'g')]
+# oranges = [('b', 'e'), ('b', 'h'), ('a', 'a'), ('f', 'd'), ('c', 'g')]
+# multi_tuples = [('x', 'y', 1), ('a', 'b', 2), ('x', 'z', 1), ('c', 'd', 3)]
+
+
+# print(sort_Tuples_Check_For_Duplicates(tuples=apples))  
+# print(sort_Tuples_Check_For_Duplicates(tuples=apples, key_value=lambda tuple: tuple[1]))  
+# print(sort_Tuples_Check_For_Duplicates(tuples=oranges))
+# print(sort_Tuples_Check_For_Duplicates(tuples=multi_tuples, key_value=lambda x: x[1]))
+# print(sort_Tuples_Check_For_Duplicates(tuples=multi_tuples))
+
+# # We get what we expect! 
+

@@ -567,5 +567,46 @@ In general:
 
 Use one star before the name of the argument to specify a variadic argument. This argument will accept all remaining arguments and when referred to by its name it represents a list of all these arguments. Further kwargs can occur after this argument, but any further arguments will not be grammatical. This makes sense, as the * symbol when used as a parameter by itself makes all further arguments kwargs. 
 
+### Unpacking Argument Lists
+
+Using * when specifying arguments in a function call unpacks the elements of the starred named object so the function will accept them as separate positional arguments. Using ** before a named dictionary object in a functiona call works the same way. 
+
+### Lambda Expressions
+
+Small anonymous functions can be created with the lambda keyword. The lambda keyword is the name of the function, the words preceding the colon are the arguments, and the words following the colon is the expression. The expression is limited to one line. The following code snippet uses lambda expressions: 
+
+```
+# We expect the following code snippet to define a function that accepts 
+# a lambda expression as an argument.  
+def sort_Tuples_Check_For_Duplicates(*, key_value=lambda x: x[0], tuples):
+    """This function accepts a key value (a function) which will
+    determine what the key for our list sort will be. It also accepts the tuples
+    that will be sorted, and then the sorted index of the tuples will be compared
+    to see if there are any duplicate values. The default key value will be 
+    a function that sorts by the first value in the tuple."""
+    
+    # Sort the list using the provided key function
+    tuples.sort(key=key_value)
+
+    # Compare adjacent elements to find duplicates
+    for i in range(len(tuples) - 1):
+        # Compare the elements based on the key value
+        if key_value(tuples[i]) == key_value(tuples[i + 1]):
+            return "duplicate found"
+    
+    return "no duplicate found"
+
+# Test Cases
+apples = [('b', 'e'), ('g', 'h'), ('a', 'a'), ('f', 'd'), ('c', 'g')]
+oranges = [('b', 'e'), ('b', 'h'), ('a', 'a'), ('f', 'd'), ('c', 'g')]
+multi_tuples = [('x', 'y', 1), ('a', 'b', 2), ('x', 'z', 1), ('c', 'd', 3)]
 
 
+print(sort_Tuples_Check_For_Duplicates(tuples=apples))  
+print(sort_Tuples_Check_For_Duplicates(tuples=apples, key_value=lambda tuple: tuple[1]))  
+print(sort_Tuples_Check_For_Duplicates(tuples=oranges))
+print(sort_Tuples_Check_For_Duplicates(tuples=multi_tuples, key_value=lambda x: x[1]))
+print(sort_Tuples_Check_For_Duplicates(tuples=multi_tuples))
+```
+
+This example illustrates how lambda expressions work. Here we have a lambda expression that unpacks a tuple to the single element in the tuple we care about. 
