@@ -549,7 +549,7 @@ client_Requests(10, "quick", name="Gorbachev", wealth_status="Truly very wealthy
 client_Requests(100, name="Greedy Goblin")
 ```
 
-We see here we get our positional arguments that are unspecified by the function stored in a list named misc_Requests, and we get our kwargs stored in a dictionary named client_Details. 
+We see here we get our positional arguments that are unspecified by the function stored in a list named misc_Requests, and we get kwargs that are unspecified by the function stored in a dictionary named client_Details. 
 
 #### Special Parameters
 
