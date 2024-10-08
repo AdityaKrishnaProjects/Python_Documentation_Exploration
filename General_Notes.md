@@ -557,7 +557,15 @@ We see here we get our positional arguments that are unspecified by the function
 
 The positional only parameters are useful as if you have a double star argument and an unspecified argument, it would typically be impossible to have the double star argument accept a kwarg whose key is the name of the unspecified argument, however using positional only, you can specify the first argument as positional only, and then have the second argument have a key that is the name of the first argument. In other words, the names of positional-only parameters can be used in **kwds without ambiguity.
 
+In general: 
+
+1. Use positional only if you want the name of the parameters to not be available to the user. This is useful when parameter names have no real meaning, if you want to enforce the order of the arguments when function is called, or if you need to take some positional paramters and arbitrary keywords (the case discussed above).
+2. Use keyword only when names have meaning and the function definition is more understandable by being explicit with names, or if you want to prevent users relying on the position of the argument being passed. 
+3. For an API, use positional-only to prevent breaking API changes if the parameter's name is modified in the future. 
+
 ### Arbitrary Argument Lists
+
+Use one star before the name of the argument to specify a variadic argument. This argument will accept all remaining arguments and when referred to by its name it represents a list of all these arguments. Further kwargs can occur after this argument, but any further arguments will not be grammatical. This makes sense, as the * symbol when used as a parameter by itself makes all further arguments kwargs. 
 
 
 
