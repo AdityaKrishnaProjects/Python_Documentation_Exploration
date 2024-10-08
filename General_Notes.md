@@ -609,4 +609,22 @@ print(sort_Tuples_Check_For_Duplicates(tuples=multi_tuples, key_value=lambda x: 
 print(sort_Tuples_Check_For_Duplicates(tuples=multi_tuples))
 ```
 
-This example illustrates how lambda expressions work. Here we have a lambda expression that unpacks a tuple to the single element in the tuple we care about. 
+This example illustrates how lambda expressions work. Here we have a lambda expression that unpacks a tuple to the single element in the tuple we care about. This lambda expression accepts the variable x (which it must be passed when it is called), and then it returns the value at the index of x specified by the lambda expressions right hand side. 
+
+### Docstrings 
+
+The first line should be a short concise summary of the object's purpose. It shouldn't state the object's name or type, as you can access those through other means. Should begin with a capital letter and end with a period. 
+
+The second line should be blank, and then further lines can describe the object's calling conventions, side effects, etc. 
+
+### Function Annotations
+
+Annotations can be made to both the arguments and the return value for the function. For arguments, place a colon after the name of the argument and specify a type, for the return write an arrow like so: -> and then include the type that the function should return. These are completely optional and have no effect on the function. 
+
+### Coding Style
+
+4 spaces for indentation. For functions use names like lowercase_with_underscores, and for classes use names like UpperCamelCase. 
+
+## Module 5
+
+
