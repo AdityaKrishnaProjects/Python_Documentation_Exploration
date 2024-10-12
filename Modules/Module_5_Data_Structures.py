@@ -41,27 +41,35 @@
 
 # # We get the result we expect!
 
-# # More experiments with list comprehensions
+# # # More experiments with list comprehensions
 
-# Our new list
-vec = [-4, -2, 0, 2, 4]
-# create a new list with the values doubled
-[x*2 for x in vec]
+# # Our new list
+# vec = [-4, -2, 0, 2, 4]
+# # create a new list with the values doubled
+# [x*2 for x in vec]
+# print(vec)
 
-# filter the list to exclude negative numbers
-[x for x in vec if x >= 0]
+# # filter the list to exclude negative numbers
+# [x for x in vec if x >= 0]
+# print(vec)
 
-# apply a function to all the elements
-[abs(x) for x in vec]
+# # apply a function to all the elements
+# [abs(x) for x in vec]
+# print(vec)
 
-# call a method on each element
-freshfruit = ['  banana', '  loganberry ', 'passion fruit  ']
-[weapon.strip() for weapon in freshfruit]
+# # call a method on each element
+# freshfruit = ['  banana', '  loganberry ', 'passion fruit  ']
+# stripped = [weapon.strip() for weapon in freshfruit]
+# print(stripped)
 
-# create a list of 2-tuples like (number, square)
-[(x, x**2) for x in range(6)]
+# # create a list of 2-tuples like (number, square)
+# truth = [(x, x**2) for x in range(6)]
+# print(truth)
 
-# flatten a list using a listcomp with two 'for'
-vec = [[1,2,3], [4,5,6], [7,8,9]]
-[num for elem in vec for num in elem]
+# # flatten a list using a listcomp with two 'for'
+# vec = [[1,2,3], [4,5,6], [7,8,9]]
+# vec = [num for elem in vec for num in elem]
+# print(vec)
+
+# # We get what we expect! 
 
