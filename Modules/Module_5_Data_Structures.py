@@ -233,5 +233,43 @@
 
 # # We get what we expect! 
 
-# # Experiments with conditions
+# # # Experiments with conditions
 
+# # We expect the following to assign 'Trondheim' to non_null
+# string1, string2, string3 = '', 'Trondheim', 'Hammer Dance'
+# non_null = string1 or string2 or string3
+# print(non_null)
+
+# # We get what we expect! 
+
+# # # Experiments with comparing sequences and other types
+
+# # We expect the following to be true
+# comp1 = ((1, 2, 3) < (1, 2, 4))
+# print(comp1)
+
+# # We expect the following to be true
+# comp2 = ([1, 2, 3] < [1, 2, 4])
+# print(comp2)
+
+# # We expect the following to be true
+# comp3 = ('ABC' < 'C' < 'Pascal' < 'Python')
+# print(comp3)
+
+# # We expect the following to be true
+# comp4 = ((1, 2, 3, 4) < (1, 2, 4))
+# print(comp4)
+
+# # We expect the following to be true
+# comp5 = ((1, 2) < (1, 2, -1))
+# print(comp5)
+
+# # We expect the following to be true
+# comp6 = ((1, 2, 3) == (1.0, 2.0, 3.0))
+# print(comp6)
+
+# # We expect the following to be true
+# comp7 = ((1, 2, ('aa', 'ab')) < (1, 2, ('abc', 'a'), 4))
+# print(comp7)
+
+# # We get what we expect

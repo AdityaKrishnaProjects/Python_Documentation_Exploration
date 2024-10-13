@@ -852,7 +852,7 @@ print('guido' in tel)
 print('jack' not in tel)
 ```
 
-We see that we get the behavior we expect. Sorted and list return lists of keys. We can remove elements using `del` and we can add elements to a dictionary using the syntax shown above: dict['key'] = value. 
+We see that we get the behavior we expect. `sorted(d)` and `list(d)` return lists of keys. We can remove elements using `del` and we can add elements to a dictionary using the syntax shown above: dict['key'] = value. 
 
 The dict() constructor builds dictionaries directly from sequences of key-value pairs:
 
@@ -936,7 +936,60 @@ for value in raw_data:
 print(filtered_data)
 ```
 
-We see that we get what expect. `items()` therefore returns a list of two place tuples for dictionaries. It is advisable to create a new list, set or dictionary, rather than deleting items from the initial list. We should be careful with the `zip()` method, as it returns an iterator, not an object we would expect. 
+We see that we get what expect. For lists containing two place tuples, the value that we include before the for loop is a two place tuple, so we can reference both elements of the first value in the list. `items()` returns a list of two place tuples for dictionaries. When creating a new list from an old list, it is advisable to create a new list, set or dictionary, rather than deleting items from the initial list. We should be careful with the `zip()` method, as it returns an iterator to save money. To get a list from `zip()` we would have to do something like `list(zip(arg1,arg2))`
 
 ### More on Conditions
+
+The conditions used in `while` and `if` statements can contain any operators, not just comparators. The comparison operators `in` and `not in` are membership tests that determine whether a value is in, or not in a container. The operators `is` and `is not` compare whether two objects are really the same object. All comparison operators have the same priority, which is lower than all numerical operators. For example `a < b == c` tests whether a is less than b, and whether b equals c. Comparison operators may be combined using boolean operators `and`, `or` and `not`. These operators have lower priority than comparison operators, and between them `not` has the highest priority and `or` the lowest. This results in `A and not B or C` being equivalent to `(A and (not B)) or C`. As always parentheses can be used to express the desired composition. 
+
+The boolean operators `and` and `or` are so called short circuit operators. Their arguments are evaluated from left to right, and evaluations stops as soon as an outcome is determined. When used as a general value and not a Boolean the returned value is the last evaluated argument. It is possible to assign the result of a comparison or other Boolean expression to a variable. For example:
+
+```
+# We expect the following to assign 'Trondheim' to non_null
+string1, string2, string3 = '', 'Trondheim', 'Hammer Dance'
+non_null = string1 or string2 or string3
+print(non_null)
+```
+
+We see we get what we expect. 
+
+In Python, unlike C, assignment inside expressions must be done explicitly with the walrus operator `:=`. This avoids typing `=` when `==` was intended. 
+
+### Comparing Sequences to other Types 
+
+Sequence objects may typically be compared to other objects of the same sequence type. The comparison uses *lexicographical* ordering. First the first two items are compared, and if they differ this determines the outcome of the comparison; if they are equal, the next two items are compared, and so on, until either sequence is exhausted. If the two items to be compared are themselves sequences of the same type, the *lexicographical* comparison is carried out recursively. If all items of two sequences compare equal, the sequences are considered equal. If one sequence is an initial sub-sequence of the other, the shorter sequence is the smaller (lesser) one. Lexicographical ordering for strings uses the Unicode code point number to order individual characters. Some examples of comparisons between sequences of the same type:
+
+```
+# We expect the following to be true
+comp1 = ((1, 2, 3) < (1, 2, 4))
+print(comp1)
+
+# We expect the following to be true
+comp2 = ([1, 2, 3] < [1, 2, 4])
+print(comp2)
+
+# We expect the following to be true
+comp3 = ('ABC' < 'C' < 'Pascal' < 'Python')
+print(comp3)
+
+# We expect the following to be true
+comp4 = ((1, 2, 3, 4) < (1, 2, 4))
+print(comp4)
+
+# We expect the following to be true
+comp5 = ((1, 2) < (1, 2, -1))
+print(comp5)
+
+# We expect the following to be true
+comp6 = ((1, 2, 3) == (1.0, 2.0, 3.0))
+print(comp6)
+
+# We expect the following to be true
+comp7 = ((1, 2, ('aa', 'ab')) < (1, 2, ('abc', 'a'), 4))
+print(comp7)
+```
+
+We get what we expect! We see that the comparison stops once an order has been decided. We see that strict substrings are considered less than. We see that comparison of strings goes by Unicode point number, and therefore alphabetical order, and we see that recursive *lexicographical* comparison works. We note that we can compare objects of different types, so long as we have appropriate comparison methods (so floats and ints are fair game, but floats and strings aren't). 
+
+## Module 6 - Modules
 
