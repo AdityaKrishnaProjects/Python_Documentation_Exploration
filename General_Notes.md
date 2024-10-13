@@ -753,7 +753,7 @@ One can use a list comprehension as the argument given to the `append()` in anot
 
 ### The `del` statement
 
-The `del` statement is like the `remove` method except it accepts an index rather than a value. It can also be used to delete entire variables, if you want those variables to not be referenced thereafter. 
+The `del` statement is like the `remove()` method except it accepts an index rather than a value. It can also be used to delete entire variables, if you want those variables to not be referenced thereafter. 
 
 ### Tuples and Sequences
 
