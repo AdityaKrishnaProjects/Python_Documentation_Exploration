@@ -745,3 +745,198 @@ vec = [num for elem in vec for num in elem]
 print(vec)
 ```
 
+We get nothing out of the ordinary in the above example. We can see that we can use list comprehension for neat unpacking of lists, using nested for loops. We also see that we need to wrap our tuples in parentheses. We also see that we can use functions as the first element in list comprehension, such that the elements added have functions applied to them before they are added (this makes sense as we know the first element in list comprehension is equivalent to `append()`).
+
+### Nested List Comprehensions
+
+One can use a list comprehension as the argument given to the `append()` in another list comprehension. In other words you can do a list comprehension in another list comprenhension. 
+
+### The `del` statement
+
+The `del` statement is like the `remove` method except it accepts an index rather than a value. It can also be used to delete entire variables, if you want those variables to not be referenced thereafter. 
+
+### Tuples and Sequences
+
+Lists are a sequence data type. The other standard data type in python is tuples. A tuple consists of two values separated by a comma. For example: 
+
+```
+t = 12345, 54321, 'hello!'
+print(t[0])
+
+print(t)
+
+# Tuples may be nested:
+u = t, (1, 2, 3, 4, 5)
+print(u)
+
+# but they can contain mutable objects:
+v = ([1, 2, 3], [3, 2, 1])
+print(v)
+
+# Empty tuples are constructed using empty parentheses
+empty = ()
+print(empty)
+print(len(empty))
+
+# Singleton tuples are constructed using a trailing comma
+singleton = 'hello',
+print(singleton)
+print(len(singleton))
+```
+
+We see that tuples are immutable, that they can contain mutable objects like lists, and that they may be nested. We also see that empty tuples are created using empty parentheses, and that singleton tuples are created with a trailing comma. The length of an empty tuple is 0, and the length of a simpleton is 1. 
+
+Though tuples may seem similar to lists, they are often used in different situations and for different purposes. Tuples are immutable, and usually contain a heterogeneous sequence of elements that are accessed via unpacking (see later in this section) or indexing (or even by attribute in the case of namedtuples). Lists are mutable, and their elements are usually homogeneous and are accessed by iterating over the list.
+
+The statement `t = 12345, 54321, 'hello!'` is an example of tuple packing. The reverse could happen if we did `x,y,z = t`
+
+This is called sequence unpacking, and sequence unpacking requires that there are as many variables on the left side of the equals sign as there are elements in the sequence. 
+
+### Sets
+
+A set is an unordered collection with no duplicate elements. Sets can be used to test for membership, and eliminating duplicate entries. Sets also support mathematical operations like union, intersection, difference and symmetric difference. To create an empty set you have to use set(), not {} which creates an empty dictionary. 
+
+```
+basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
+print(basket)                      # show that duplicates have been removed
+
+print('orange' in basket)               # fast membership testing
+
+print('crabgrass' in basket)
+
+# Demonstrate set operations on unique letters from two words
+a = set('abracadabra')
+b = set('alacazam')
+print(a)                                  # unique letters in a
+
+print(a - b)                           # letters in a but not in b
+
+print(a | b)                              # letters in a or b or both
+
+print(a & b)                             # letters in both a and b
+
+print(a ^ b)                              # letters in a or b but not both
+```
+
+Set works the way we expect. The only operation we aren't used to is `^` which is symmetric difference. Set comprehensions are supported. 
+
+### Dictionaries
+
+Dictionaries are sometimes found in other languages as “associative memories” or “associative arrays”. Unlike sequences, which are indexed by a range of numbers, dictionaries are indexed by keys, which can be any immutable type; strings and numbers can always be keys. Tuples can be used as keys if they contain only strings, numbers, or tuples; if a tuple contains any mutable object either directly or indirectly, it cannot be used as a key. Dictionaries are a set of key:value pairs, with the requirement that keys are unique. 
+
+You can delete a key:value pair using the `del` statement. Performing list(d) on a dictionary returns a list of all the keys used in the dictionary, in insertion order. If you want it sorted you use sorted(d). To check whether a single key is in a dictionary use the `in` keyword. 
+
+```
+# This should instantiate the dictionary
+tel = {'jack': 4098, 'sape': 4139}
+tel['guido'] = 4127
+
+print(tel)
+
+print(tel['jack'])
+
+# This should delete the element of the dictionary associated with the key 'sape'
+del tel['sape']
+tel['irv'] = 4127
+print(tel)
+
+# Can use the list statement to transform dictionaries to lists
+print(list(tel))
+
+# Should return a sorted list of the keys of our dictionary
+print(sorted(tel))
+
+# Should test for dictionary membership for the keys
+print('guido' in tel)
+
+print('jack' not in tel)
+```
+
+We see that we get the behavior we expect. Sorted and list return lists of keys. We can remove elements using `del` and we can add elements to a dictionary using the syntax shown above: dict['key'] = value. 
+
+The dict() constructor builds dictionaries directly from sequences of key-value pairs:
+
+```
+# Should construct a dictionary using the dict function
+tel = dict([('sape', 4139), ('guido', 4127), ('jack', 4098)])
+
+print(tel)
+
+# Should construct a dictionary using a dict expression
+keys = {x: x**2 for x in (2, 4, 6)}
+
+print(keys)
+
+# When the keys are simple strings it is sometimes easier to specify pairs 
+# using keyword arguments
+tel = dict(sape=4139, guido=4127, jack=4098)
+
+print(tel)
+```
+
+We see we get the behavior we expect, and that we can do dict comprehension. 
+
+### Looping Techniques
+
+When looping through dictionaries the key and corresponding value can be retrieved directly using the items() method:
+
+```
+# Dictionary looping
+knights = {'gallahad': 'the pure', 'robin': 'the brave'}
+
+# We expect that this will return a list of two place tuples
+print(knights.items())
+
+# Should print the successive keys and values in knights
+for k, v in knights.items():
+    print(type(k))
+    print(type(v))
+    print(k, v)
+
+# Should print the values of our list, with their keys being 0 through 2
+for i, v in enumerate(['tic', 'tac', 'toe']):
+    print(i, v)
+
+# Should loop over both lists, where the lists are combined into a list of 
+# two place tuples
+questions = ['name', 'quest', 'favorite color']
+answers = ['lancelot', 'the holy grail', 'blue']
+
+# Zip is an iterator, so we expect it will return a zip type object
+l = zip(questions,answers)
+
+print(l)
+
+for q, a in zip(questions, answers):
+    print('What is your {0}?  It is {1}.'.format(q, a))
+
+# Reversed should reverse the order of a list (so in this case should return 
+# 9 through one, only including odds)
+for i in reversed(range(1, 10, 2)):
+    print(i)
+
+# Should loop over a sequence in a sorted order, using the sorted() method
+basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+for i in sorted(basket):
+    print(i)
+
+# Should print the list in order but without duplicates
+basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+for f in sorted(set(basket)):
+    print(f)
+
+# The following should return a list without the NaNs
+import math
+raw_data = [56.2, float('NaN'), 51.7, 55.3, 52.5, float('NaN'), 47.8]
+filtered_data = []
+for value in raw_data:
+    if not math.isnan(value):
+        filtered_data.append(value)
+
+print(filtered_data)
+```
+
+We see that we get what expect. `items()` therefore returns a list of two place tuples for dictionaries. It is advisable to create a new list, set or dictionary, rather than deleting items from the initial list. We should be careful with the `zip()` method, as it returns an iterator, not an object we would expect. 
+
+### More on Conditions
+
