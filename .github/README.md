@@ -1,2 +1,1 @@
-../General_Notes.md
-
+/General_Notes.md
