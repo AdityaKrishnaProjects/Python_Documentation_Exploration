@@ -633,6 +633,8 @@ Methods are functions associated with a specific class.
 
 `list.append(x)` adds an item to the end of the list, equivalent to `a[len(a):] = [x]`.
 
+This method only takes one argument, so trying to append multiple values is not acceptable. Do not attempt to get around this by appending a list, as this will append the whole list, and not its values. Use the following method for that functionality. 
+
 `list.extend(iterable)` extends the list by appending all the items from the iterable. Equivalent to `a[len(a):] = iterable`.
 
 `list.insert(i, x)` inserts an item at a given position. The first argument is the index of the element before which to insert, so `a.insert(0, x)` inserts at the front of the list, and `a.insert(len(a), x)` is equivalent to `a.append(x)`.
@@ -663,7 +665,7 @@ To use lists as stacks where the last item added is the first item retrieved, us
 
 ### Using Lists as Queues
 
-It is also possible to use lists as queues, where the first element added is the first retrieved. Here you would use `list.append()` and `list.pop([0])`, but this is slow as it inserts and pops shifting all other elements over by 1. Instead use `collections.deque`, which was designed to have fast appends and pops from both ends. For example: 
+It is also possible to use lists as queues, where the first element added is the first retrieved. Here you would use `list.append()` and `list.pop([0])`, but this is slow as it inserts and pops by shifting all other elements over by 1. Instead use `collections.deque`, which was designed to have fast appends and pops from both ends. For example: 
 
 ```
 # # Experiments with using lists as queues
@@ -784,7 +786,7 @@ print(singleton)
 print(len(singleton))
 ```
 
-We see that tuples are immutable, that they can contain mutable objects like lists, and that they may be nested. We also see that empty tuples are created using empty parentheses, and that singleton tuples are created with a trailing comma. The length of an empty tuple is 0, and the length of a simpleton is 1. 
+We see that tuples are immutable, that they can contain mutable objects like lists, and that they may be nested. We also see that empty tuples are created using empty parentheses, and that singleton tuples are created with a trailing comma. The length of an empty tuple is 0, and the length of a singleton is 1. 
 
 Though tuples may seem similar to lists, they are often used in different situations and for different purposes. Tuples are immutable, and usually contain a heterogeneous sequence of elements that are accessed via unpacking (see later in this section) or indexing (or even by attribute in the case of namedtuples). Lists are mutable, and their elements are usually homogeneous and are accessed by iterating over the list.
 
@@ -993,3 +995,72 @@ We get what we expect! We see that the comparison stops once an order has been d
 
 ## Module 6 - Modules
 
+### Basics of Modules
+
+Sometimes you may want to resuse definitions you have made (functions or variables) you have created in another program without having to copy it over into each program. Python has a way to put these defnitions into a file and use them in a script called a module. Definitions from modules can be imported into other modules or the main module (the top level program executor). 
+
+A module is a file containing python definitions and statements, the file name is the module name with the suffix `.py` (as is visible in this projects directory!). 
+
+Modules in the same directory as the main module can be referred to by using the statement `import` followed by the name of the module. From there you can use functions and definitions defined by the module by writing the module name followed by a period and the definition name. Say we had a module named `multiplier.py` that had one definition, a function that multiplied two numbers named `mult`. We would then use it in main by writing `multiplier.mult(x,y)` if x and y were the two numbers we wanted to multiply. 
+
+Once the module has been imported, all the names and functions in the module are not added to the namespace, only the module is added there. You can assign module functions local names like so: 
+
+```
+import multiplier
+
+mult = multiplier.mult
+
+x, y = 1, 2
+
+mult(x,y)
+```
+
+### Namespaces
+
+A namespace is a mapping from names to objects. Most namespaces are currently implemented as Python dictionaries (which may affect performance). Some namespaces include: the set of built-in names in python (such as `abs()`); the global names in a module; the local names in a function invocation; and in a sense the attributes of an object. Two namespaces can have the same names associated with different objects with no issues. 
+
+Attributes are any name following a period. References to names in modules are all attribute references, as they all have an implicit object they reference (in the case of functions in the main module, this object is the main module). A module's attributes and the global names defined in a name space share the same namespace (barring `__dict__`, which is an attribute but not a global name). 
+
+Attributes may be read only or writable. In the latter case, assignment to attributes is possible. Module attributes are writable. You may also delete writable module attributes using `del`. 
+
+Namespaces are created at different moments and have different lifetimes. The namespace containing built in names is created when the Python interpreter starts up, and is never deleted. The global namespace for a module is created when the module definition is read in; normally, module namespaces also last until the interpreter quits. The statements executed by the top-level invocation of the interpreter, either read from a script file or interactively, are considred part of a module called `__main__`, so they have their own global namespace (the built in names also live in a module, this is called `builtins`). 
+
+The local namespace for a function is created when a function is called, and fogotten when the function returns, or raises an exception that is not handled by the function. 
+
+In Python names are automatically assigned to the innermost scope if no scope is given. THe same is true for deletions, the statement `del x` removes the binding of `x` from the namespace referenced by the local scope. 
+
+The following code snippet illustrates how scopes and referencing scopes works: 
+
+```
+def scope_test():
+    def do_local():
+        spam = "local spam"
+
+    def do_nonlocal():
+        nonlocal spam
+        spam = "nonlocal spam"
+
+    def do_global():
+        global spam
+        spam = "global spam"
+
+    spam = "test spam"
+    do_local()
+    print("After local assignment:", spam)
+    do_nonlocal()
+    print("After nonlocal assignment:", spam)
+    do_global()
+    print("After global assignment:", spam)
+
+scope_test()
+print("In global scope:", spam)
+```
+
+We see that we get the behavior we expect. 
+
+
+### More on Modules
+
+A module can contain executable statements as well as function definitions. These statements are intended to initialize the module. They are executed only the first time the module name is encountered in an import statement (in fact function definitions are also ‘statements’ that are ‘executed’; the execution of a module-level function definition adds the function name to the module’s global namespace). 
+
+Each module has a private namespace, used as the global namespace of the function. 

@@ -1,3 +1,36 @@
+# # # Experiments with List methods
+
+# # We expect the following to append all the values in the list, creating a 6
+# # element long list
+# a = [1,2,3]
+
+# a[len(a):] = [1,2,3]
+
+# print(len(a))
+# print(a)
+
+# # We get what we expect!
+
+# # We expect the following to produce an error (append only takes one argument)
+# a = [1,2,3]
+# a.append(1,2,3)
+
+# print(a)
+
+# # We get what we expect! 
+
+# # We expect the following to append the list as one value, creating a 4 element
+# # long list
+
+# a = [1,2,3]
+
+# a.append([1,2,3])
+
+# print(len(a))
+# print(a)
+
+# # We get what we expect! 
+
 # # # Experiments with using lists as queues
 
 # # This code snippet should remove and add items to the front of the list
