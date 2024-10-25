@@ -24,3 +24,5 @@
 # print("In global scope:", spam)
 
 # # We get what we expect!
+
+# # Experiments with 

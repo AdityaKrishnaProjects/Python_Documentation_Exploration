@@ -1056,11 +1056,66 @@ scope_test()
 print("In global scope:", spam)
 ```
 
-We see that we get the behavior we expect. 
-
+We see that we get the behavior we expect. Our function `scope_test()` contains functions that use different scopes. When we define our string with our internal function with no scope specifier it is read only, and is not used by the print function (as we have already defined `spam` above it in the execution of `scope_test()`). When we define our string with nonlocal scope, it is printed (as it is equivalent to redefining `spam`). When we define it with global scope, it does not print, as it is outside the scope of the function. This does however allow us to print it when we are outside of our function. 
 
 ### More on Modules
 
 A module can contain executable statements as well as function definitions. These statements are intended to initialize the module. They are executed only the first time the module name is encountered in an import statement (in fact function definitions are also ‘statements’ that are ‘executed’; the execution of a module-level function definition adds the function name to the module’s global namespace). 
 
 Each module has a private namespace, used as the global namespace of the function. 
+
+As modules have their own 'global' namespaces, when writing a module you do not have to worry about interfering with a user's global namespace. The user can affect the module's global namespace by referring to the attributes of the module explicitly after a period (e.g. `multiplier.multvar = 1`). 
+
+Modules can import other modules, it is customary to place all import statements at the beginning of a module (or script). The imported module names, if placed at the top level of a module (outside any functions or classes), are added to the module's global namespace. 
+
+We can use a variant of the import statement if we want to import names from a module directly into the importing module's name space: 
+
+```
+from multiplier import mult, mult2
+
+x = 1
+y = 2
+
+print(mult(x,y))
+```
+
+If we import like this, we do not introduce the module name into the local namespace. 
+
+There is a variant to import all names that a module defines (`from multiplier import *`). This imports all names except those beginning with an underscore. We can use the statement `as` to avoid renaming the imported names in the body of the script/module. 
+
+### The Module Search Path
+
+When a module named `blorb` is imported, first the interpreter seraches for a built-in module with that name. Then it searches for a file named `blorb.py` in a list of directories given by the variable sys.path. sys.path is initialized in these locations: 
+
+1. The directory containing the input script
+2. [PYTHONPATH](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH) (a list of directory names with the same syntax as the shell variable PATH)
+3. The installation-dependent default
+
+On systems which support symlinks, the symlink is followed first, so the directory containing the symlink is not added to the search path. 
+
+### Compiled Python Files
+
+To speed up loading modules, Python caches the compiled version of each module in the `__pycache__` directory. 
+
+### Standard Modules
+
+The variable sys.path is a list of strings that determines the interpreter’s search path for modules. It is initialized to a default path taken from the environment variable [PYTHONPATH](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH), or from a built-in default if [PYTHONPATH](https://docs.python.org/3/using/cmdline.html#envvar-PYTHONPATH) is not set. You can modify it using standard list operations:
+
+```
+import sys
+sys.path.append('/ufs/guido/lib/python')
+```
+
+### The dir() Function
+
+The built in function `dir()` is used to find out which names a module defines. With no arguments dir() gives you the list of names you have currently defined. 
+
+### Packages
+
+Packages are a way of structuring Python's module namespace by using 'dotted module names'. For example, the module name A.B designates a submodule named B in a package named A.
+
+Note that when using `from package import item`, the item can be either a submodule (or subpackage) of the package, or some other name defined in the package, like a function, class or variable. The `import` statement first tests whether the item is defined in the package; if not, it assumes it is a module and attempts to load it. If it fails to find it, an ImportError exception is raised.
+
+Contrarily, when using syntax like `import item.subitem.subsubitem`, each item except for the last must be a package; the last item can be a module or a package but can’t be a class or function or variable defined in the previous item.
+
+## Module 7 - Input and Output
