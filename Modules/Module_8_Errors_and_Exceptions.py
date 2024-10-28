@@ -67,3 +67,41 @@
 
 # # We get what we expect
 
+# # # Experiments with finally statements
+
+# # This code should ask for a number, not end unless you give it the right 
+# # number and curse you on the way out
+# def vindictivenumberwanter():
+#     try:
+#         integer = input("Give me a number")
+#         while integer != 21081231237807230187:
+#             print("wrong number")
+#     finally:
+#         print("I WILL GET YOU")
+
+# vindictivenumberwanter()
+
+# # We get what we expect!
+
+# # # Experiments with finally and return statements
+
+# # This could should execute the finally statement's return statement
+# def bool_return():
+#     try:
+#         return True
+#     finally:
+#         return False
+
+# print(bool_return())
+
+# # We get what we expect! 
+
+# # # Experiments with with statements
+
+# # The following code should open the file and close it regardless of if the 
+# # file reaches its final line
+# with open("myfile.txt") as f:
+#     for line in f:
+#         print(line, end="")
+
+# # We get what we expect
