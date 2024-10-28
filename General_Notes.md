@@ -1119,3 +1119,98 @@ Note that when using `from package import item`, the item can be either a submod
 Contrarily, when using syntax like `import item.subitem.subsubitem`, each item except for the last must be a package; the last item can be a module or a package but can’t be a class or function or variable defined in the previous item.
 
 ## Module 7 - Input and Output
+
+### Fancier Output Formatting
+
+So far we have only outputted using `return` statements and print() functions. We can also use the `write()` function to write objects to a file. 
+
+When using strings we can use f-strings. A string preceded by the character f can have python expressions in curly braces. For example: 
+
+```
+bird = "parrot"
+
+status = "dead"
+
+# The following code should print using an fstring
+print(f'my bird is a {bird} and it\'s status is {status}')
+```
+
+We see we get what we expect. We could also use `string.format()` but that requires much more precise detailing of the behavior we want from the string. 
+
+When trying to make objects strings for debugging use the `str()` function for human readable output, and use the `repr()` for interpreter readable outputs.
+
+### Formatted String Literals (f-strings)
+
+Placing a number after a colon within the curly brace expression in an f-string will cause the result to be a minimum of a certain number of characters long. This is useful when you want a consistent output (e.g. making columns line up). Consider the following example
+
+```
+# The following should print consistently lined up columns of data
+table = {'Sjoerd': 4127, 'Jack': 4098999, 'Dcab': 7678}
+for name, phone in table.items():
+    print(f'{name:10} ==> {phone:10d}')
+```
+
+We see we get what we expect. 
+
+Other modifiers for f-strings include `!a` which applies `ascii()`, `!s` which applies `str()`, `!r` which applies `repr()` and `=` which expands the expression to be of the format `'name of variable' + '=' + 'string'`.
+
+### The str.format() method
+
+Basic use of string formatting looks like:
+
+```
+print('We are the {} who say "{}!"'.format('knights', 'Ni'))
+```
+
+The format() method accepts any python objects. A number in the curly braces can indicate which argument of format should be represented where. Keyword arguments can be used. Positional and keyword arguments can be arbitrarily combined. When using a dictionary object you can use the object's key's names directly instead of referencing by position: 
+
+```
+# The following should print the value associated with
+# the key in the dictionary
+table = {'Sjoerd': 4127, 'Jack': 4098, 'Dcab': 8637678}
+print('Jack: {0[Jack]}; Sjoerd: {0[Sjoerd]}; '
+      'Dcab: {0[Dcab]}'.format(table))
+```
+
+We see we get what we expect. We need to fiurst input the positional argument for format (0), and then we can give the key directly to get the value we want. We could also use the double asterisk format to directly reference the kwargs: 
+
+```
+# We expect the following to print the values for their associated keys
+table = {'Sjoerd': 4127, 'Jack': 4098, 'Dcab': 8637678}
+print('Jack: {Jack}; Sjoerd: {Sjoerd}; Dcab: {Dcab}'.format(**table))
+```
+
+We see we get what we expect. 
+
+### Manual String Formatting
+
+The `str.rjust()` method of string objects right-justifies a string in a field of a given width by padding it with spaces on the left. There are similar methods `str.ljust()` and `str.center()`. These methods do not write anything, they just return a new string. If the input string is too long, they don’t truncate it, but return it unchanged; this will mess up your column lay-out but that’s usually better than the alternative, which would be lying about a value. If you really want truncation you can always add a slice operation, as in `x.ljust(n)[:n]`. There is another method, `str.zfill()`, which pads a numeric string on the left with zeros. It can handle decimals and minus signs well. 
+
+The following code snippet will use str.center(): 
+
+```
+# We expect the following to print 10 centered strings, with total line length 
+# being 70 characters
+for x in range(10):
+    print(commands.center(70+x))
+```
+
+We get what we expect!
+
+### Reading and Writing Files
+
+`open()` returns a file object, and is most commonly used with two positional arguments and one keyword argument: open(filename, mode, encoding=None). 
+
+The first argument is a string containing the filename. The second argument is another string containing a few characters describing the way in which the file will be used. mode can be `'r'` when the file will only be read, `'w'` for only writing (an existing file with the same name will be erased), and `'a'` opens the file for appending; any data written to the file is automatically added to the end. `'r+'` opens the file for both reading and writing. The mode argument is optional; `'r'` will be assumed if it’s omitted.
+
+Normally, files are opened in text mode, that means, you read and write strings from and to the file, which are encoded in a specific encoding. If encoding is not specified, the default is platform dependent. Because UTF-8 is the modern de-facto standard, `encoding="utf-8"` is recommended unless you know that you need to use a different encoding. Appending a `'b'` to the mode opens the file in binary mode. Binary mode data is read and written as bytes objects. You can not specify encoding when opening file in binary mode.
+
+*Warning: Calling `f.write()` without using the with keyword or calling `f.close()` might result in the arguments of `f.write()` not being completely written to the disk, even if the program exits successfully. Good practice is to use the `with` keyword before `open()` like so:*
+
+```
+with open('workfile', encoding="utf-8") as f:
+    read_data = f.read()
+```
+
+### Methods of File Objects
+
