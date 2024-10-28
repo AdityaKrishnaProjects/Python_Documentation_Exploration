@@ -1261,4 +1261,129 @@ This simple serialization technique can handle lists and dictionaries, but seria
 
 ## Module 8 - Errors and Exceptions
 
+### Syntax Errors
+
+Syntax errors are parsing errors. The parser repeats the offending line and displays an arrow pointing at the token in the line where the error was detected. The error may be caused by the absence of a token before the indicated token. 
+
+### Exceptions
+
+Even if a statement is syntactically correct it may cause an error during execution. These are called exceptions. They are not unconditionally fatal to the termination of the program. 
+
+The error message is of the form:
+
+```
+file "file name", line n
+    offending code
+              ^^^^
+Syntax error: invalid syntax
+```
+
+Where `"file name"` is the name of the file and `n` is the number of the line where the error occurred. The file name given when working in an interpreter is typically `<stdin>`. 
+
+The last line of the error message indicated what type of error it was. 
+
+### Handling Exceptions
+
+`try` statements allow us to handle exceptions. 
+
+The `try` statement works as follows: 
+
+1. First the clause between `try` and `except` is executed
+2. If no exception occurs, the `except` clause is skipped and the execution of `try` is finished
+3. If an exception occurs during execution, then if it's type matches the exception named after the `except` keyword, the `except` clause is executed, and then execution continues after the `try/except` block
+4. If an exception occurs which doesn't match any exception named in the `except` clause, it is passed on to outer `try` statements. If no handler is found, it is an unhandled `exception` and the execution stops with an error message
+
+A `try` statement may have more than one `except` clause, to specify handlers for different exceptions. At most one handler will be executed. Handlers only handle exceptions that occur in the corresponding `try` clause, not in other handlers of the same `try` statement. An except clause may name multiple exceptions as a parenthesized tuple. 
+
+A class in an `except` clause matches exceptions which are instances of the class itself, or one of its derived classes, but, an `except` clause listing a derived class does not match instances of its base class. 
+
+```
+# Should raise B, C and D in that order
+class B(Exception):
+    pass
+
+class C(B):
+    pass
+
+class D(C):
+    pass
+
+for cls in [B, C, D]:
+    try:
+        raise cls()
+    except D:
+        print("D")
+    except C:
+        print("C")
+    except B:
+        print("B")
+
+# Should raise B, B, and B
+for cls in [B, C, D]:
+    try:
+        raise cls()
+    except B:
+        print("B")
+    except C:
+        print("C")
+    except D:
+        print("D")
+```
+
+We see that the exceptions we get in the first for loop are B, C and D, because the derived classes don't trigger their base class, whereas in the second loop we get B, B and B, because when the `except` clause lists the base class it also catches its derived classes. 
+
+In the above code, we explicitly use the `try` with `raise` in the body to test out the predefined exceptions we would except. These exceptions are predefined classes. 
+
+An exception may have associated values, also known as the exception's arguments. The presence and types of the arguments depend on the exception type. 
+
+The `except` clause may specify a variable after the exception name. The variable is bound to the exception instance which typically has an `args` attribute that stores the arguments. Consider the following code snippet: 
+
+```
+# Should print the type of inst (exception class), the arguments of the 
+# exception after it is raised, the arguments should be printed again as 
+# __str__() is defined to print all arguments without accessings .args, and 
+# then it should unpack the arguments
+try:
+    raise Exception('spam', 'eggs')
+except Exception as inst:
+    print(type(inst))    # the exception type
+    print(inst.args)     # arguments stored in .args
+    print(inst)          # __str__ allows args to be printed directly,
+                         # but may be overridden in exception subclasses
+    x, y = inst.args     # unpack args
+    print('x =', x)
+    print('y =', y)
+```
+
+We see we get what we expect. Specifically we see that we can unpack the arguments of the exception and use them in whatever our except clause tries. 
+
+[(BaseException](https://docs.python.org/3/library/exceptions.html#BaseException) is the common base class of all exceptions. [Exception](https://docs.python.org/3/library/exceptions.html#Exception) is a subclass of [(BaseException](https://docs.python.org/3/library/exceptions.html#BaseException) and is the base class of all non-fatal exceptions. Exceptions that are not subclasses of [Exception](https://docs.python.org/3/library/exceptions.html#Exception) are not typically handled (as they indicate that the program should terminate). They include [SystemExit](https://docs.python.org/3/library/exceptions.html#SystemExit). 
+
+[Exception](https://docs.python.org/3/library/exceptions.html#Exception) can be used as a wildcard that catches (almost) everything. It is good practice to be as specific as possible with the types of exceptions that you intend to handle. 
+
+The most common pattern for handling [Exception](https://docs.python.org/3/library/exceptions.html#Exception) is to print or log the exception and then re-raise it (allowing a caller to handle the exception as well).
+
+The `try` ... `except` statement has an optional else clause, which, when present, must follow all except clauses. It is useful for code that must be executed if the `try` clause does not raise an exception. For example:
+
+```
+# We expect the following to try to read the file, print the line length, or print OSError if an OSError occurs while opening the file.
+for arg in sys.argv[1:]:
+    try:
+        f = open(arg, 'r')
+    except OSError:
+        print('cannot open', arg)
+    else:
+        print(arg, 'has', len(f.readlines()), 'lines')
+        f.close()
+```
+
+The reason we want to not include the code in the body of the else clause in the `try` statement's body is because we wouldn't want to raise errors other than `OSError` which could happen if we allowed our `print` statement or our `f.close()` statement in the body of `try`. 
+
+Exception handlers handle exceptions that occur anywhere in the execution path of the `try` clause (which includes funcitons called, even indireclty, in the try clause). 
+
+### Raising Exceptions
+
+The `raise` statement allows the programmer to force a specified exception to occur. It takes one argument, namely the exception to occur. This must be an exception instance or an exception class. 
+
+### Exception Chaining
 
