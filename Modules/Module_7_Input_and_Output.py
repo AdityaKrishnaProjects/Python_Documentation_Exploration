@@ -49,3 +49,12 @@
 
 # # We get what we expect! 
 
+# # # Experiments with jsons
+
+# import json
+
+# # We expect the following to print the json
+# x = [1, 'simple', 'list']
+# print(json.dumps(x))
+
+# # We get what we expect

@@ -1214,3 +1214,51 @@ with open('workfile', encoding="utf-8") as f:
 
 ### Methods of File Objects
 
+Assuming we have a file object, `f`: 
+
+`f.read(size)` reads some quantity of data and returns it as a string, or bytes. When size is omitted the whole file is read. Include the size parameter if you don't want a file to have greater size than the memory of your machine. If the end of the file has been reached `f.read()` will return an empty string. 
+
+`f.readline()` reads a single line from the file; a newline character (`\n`) is left at the end of the string, and is only omitted on the last line of the file if the file doesn’t end in a newline. This makes the return value unambiguous; if `f.readline()` returns an empty string, the end of the file has been reached, while a blank line is represented by '`\n`', a string containing only a single newline.
+
+You can use `for` loops to go through file objects line by line. You can get all lines of the file in a list using `list(f)`. `f.write(string)` writes the contents of string to the file, returning the number of characters written. 
+
+`f.tell()` returns an integer giving the file object’s current position in the file represented as number of bytes from the beginning of the file when in binary mode and an opaque number when in text mode.
+
+To change the file object’s position, use `f.seek(offset, whence)`. The position is computed from adding offset to a reference point; the reference point is selected by the whence argument. A whence value of 0 measures from the beginning of the file, 1 uses the current file position, and 2 uses the end of the file as the reference point. whence can be omitted and defaults to 0, using the beginning of the file as the reference point.
+
+In text files (those opened without a b in the mode string), only seeks relative to the beginning of the file are allowed (the exception being seeking to the very file end with `seek(0, 2)`) and the only valid offset values are those returned from the `f.tell()`, or zero. Any other offset value produces undefined behaviour.
+
+### Saving Structured Data with `json`
+
+Strings can easily be written to and read from a file. Numbers take a bit more effort, since the `read()` method only returns strings, which will have to be passed to a function like `int()`, which takes a string like `'123'` and returns its numeric value `123`. When you want to save more complex data types like nested lists and dictionaries, parsing and serializing by hand becomes complicated.
+
+Rather than having users constantly writing and debugging code to save complicated data types to files, Python allows you to use the popular data interchange format called JSON (JavaScript Object Notation). The standard module called json can take Python data hierarchies, and convert them to string representations; this process is called serializing. Reconstructing the data from the string representation is called deserializing. Between serializing and deserializing, the string representing the object may have been stored in a file or data, or sent over a network connection to some distant machine.
+
+If you have an object x, you can view its JSON string representation with a simple line of code:
+
+```
+import json
+x = [1, 'simple', 'list']
+print(json.dumps(x))
+>>>'[1, "simple", "list"]'
+```
+
+We see we get what we expect. 
+
+Another variant of the `dumps()` function, called `dump()`, simply serializes the object to a text file. So if `f` is a text file object opened for writing, we can do this:
+
+```
+json.dump(x, f)
+```
+
+To decode the object again, if `f` is a binary file or text file object which has been opened for reading:
+
+```
+x = json.load(f)
+```
+
+This simple serialization technique can handle lists and dictionaries, but serializing arbitrary class instances in JSON requires a bit of extra effort. The reference for the json module contains an explanation of this.
+
+## Module 8 - Errors and Exceptions
+
+
