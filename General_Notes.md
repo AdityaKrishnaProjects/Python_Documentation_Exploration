@@ -1442,3 +1442,5 @@ When an exception is created in order to be raised, it is usually initialized wi
 
 ## Module 9 - Classes
 
+### General Classes
+
