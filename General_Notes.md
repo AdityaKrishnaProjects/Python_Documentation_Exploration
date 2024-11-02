@@ -1444,3 +1444,11 @@ When an exception is created in order to be raised, it is usually initialized wi
 
 ### General Classes
 
+Classes are a way to bundle data and functionality. Classes allow you to create an object that has specific data assigned to it, and specific functions that it declares. Classes create a new type of object, which allows you to create instances of this type. These instances have attributes attached to them for maintaining their state, and have methods (the functions defined by the class they are instantiated from) for modifying its state. 
+
+Classes in python support class inheritance, multiple inheritance, derived classes overriding methods defined in their base classes, and a method can call the method of a base class with the same name. Objects can contain arbitrary amounts and kinds of data. Classes are created at runtime, and can be modified further after creation. 
+
+Class members are public, all member functions are virtual. There is no shorthand for referencing the object's members from its method: the method function is declared with an explicit first argument representing the object, which is provided implicitly by the call. Classes are also objects, which allows importing and renaming. 
+
+### A Word About Names and Objects
+
