@@ -1452,3 +1452,45 @@ Class members are public, all member functions are virtual. There is no shorthan
 
 ### A Word About Names and Objects
 
+Objects have individuality and multiple names can be bound to the same object (called aliasing in other languages). Aliases behave like pointers in some respect which makes passing the object cheap and if a function modifies an object passed as an argument the caller will see the change. 
+
+### Class Definition Syntax
+
+Class definitions have a similar syntax to function definitions. They must be executed before they have any effect. The statements inside a class definition can be anything, but in practice are typically function definitions. The function definitions usually have a strange argument list, dictated by the calling conventions for methods. When a class definition is entered a new namespace is entered and used as the local scope. When a class definition is left normally, a class object is created. 
+
+### Class Objects
+
+Class objects support two operations: instantiation and attribute references. 
+
+Attribute references use the standard syntax in python `obj.name`. Valid attribute names are all the name in the namespace of the class when the object was created. 
+
+Class instnation uses function notation. Consider the following code snippet: 
+
+```
+# The following is a dummy class that has two attributes, a piece of data and a 
+# function
+class FooBar: 
+    "a dummy class"
+    truth = True
+
+    def __init__(self, data, string):
+        self.data = data
+        self.string = string
+
+    def f(self):
+        return(truth)
+
+# The following should instantiate an object of the type of our class
+x = FooBar([1,2,3], "polar")
+
+# The following should print the instantiated attributes of our instance, and 
+# the variable set by the class
+print(x.data, x.string, x.truth)
+```
+
+`FooBar.truth` and `FooBar.f` are valid attributes. Class attributes can be assigned to so you could change the value of `FooBar.truth` by assignment. 
+
+`x` is an instantiated object of the type of our class `FooBar`. This operation creates an empty object (with the attributes that the class has), many classes like to create instances that are customized to a specific initial state. We therefore allow classes to define a special method named `__init__()` like in the code snippet above. 
+
+### Instance Objects
+
