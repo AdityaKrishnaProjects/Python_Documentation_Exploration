@@ -1549,3 +1549,131 @@ Methods may reference global names in the same way as ordinary functions. The gl
 
 ### Inheritance 
 
+Python allows class inheritance. The syntax is illustrated in the following code snippet: 
+
+```
+class DerivedClassName(BaseClassName):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+
+BaseClassName must be defined in an accessible namespace from the scope containing the derived class definition. Any derived expression that gives a class is acceptable as an argument for inheritance (e.g. classes in other modules, other derived classes).
+
+Derived class execution proceeds the same as for a base class. When the class object is constructed the base class is remembered. If a requested attribute is not found in the derived class, the search proceeds to the base class. This rule is applied recursively. 
+
+Instances of derived classes also proceed as instances of base classes do. `DerivedClassName()` creates an instance of the derived class. Attribute references proceed by first searching the derived class, then the base class and then descending down the chain if necessary. If this search yields a function object a method reference is valid. 
+
+Derived classes may override the methods of their base classes. Methods have no special privileges when calling other methods of the same object, so a method defined in a base class calling another method defined in the same base class may end up calling a method of a derived class that overrides it. 
+
+An overriding method in a derived class may in fact want to extend rather than simply replace the base class method of the same name. There is a simple way to call the base class method directly: just call `BaseClassName.methodname(self, arguments)`. This is occasionally useful to clients as well. (Note that this only works if the base class is accessible as BaseClassName in the global scope.)
+
+Python has two built-in functions that work with inheritance:
+
+- Use `isinstance()` to check an instance’s type: `isinstance(obj, int)` will be `True` only if `obj.__class__` is `int` or some class derived from `int`.
+- Use `issubclass()` to check class inheritance: `issubclass(bool, int)` is `True` since `bool` is a subclass of `int`. However, `issubclass(float, int)` is `False` since `float` is not a subclass of `int`.
+
+### Multiple Inheritance
+
+Python supports multiple inheritance. A class definition with multiple base classes looks like the following code snippet: 
+
+```
+class DerivedClassName(Base1, Base2, Base3):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+
+For most purposes, in the simplest cases, you can think of the search for attributes inherited from a parent class as depth-first, left-to-right, not searching twice in the same class where there is an overlap in the hierarchy. Thus, if an attribute is not found in `DerivedClassName`, it is searched for in `Base1`, then (recursively) in the base classes of `Base1`, and if it was not found there, it was searched for in `Base2`, and so on.
+
+In fact, it is slightly more complex than that; the method resolution order changes dynamically to support cooperative calls to `super()`. 
+
+Dynamic ordering is necessary because all cases of multiple inheritance exhibit one or more diamond relationships (where at least one of the parent classes can be accessed through multiple paths from the bottommost class). For example, all classes inherit from `object`, so any case of multiple inheritance provides more than one path to reach `object`. To keep the base classes from being accessed more than once, the dynamic algorithm linearizes the search order in a way that preserves the left-to-right ordering specified in each class, that calls each parent only once, and that is monotonic (meaning that a class can be subclassed without affecting the precedence order of its parents).
+
+### Private Variables
+
+Instance variables that can only be accessed from inside an object don't exist in Python. In Python the convention is that a name prefixed by an underscore (e.g. `_name`) should be treated as a non-public part of the API (whether it is a function, or a data member). It should be considered an implementation detail and is subject to change without notice. 
+
+Since there is a valid use-case for class-private members (namely to avoid name clashes of names with names defined by subclasses), there is limited support for such a mechanism, called name mangling. Any identifier of the form `__spam` (at least two leading underscores, at most one trailing underscore) is textually replaced with `_classname__spam`, where classname is the current class name with leading underscore(s) stripped. This mangling is done without regard to the syntactic position of the identifier, as long as it occurs within the definition of a class.
+
+This is helpful for letting subclasses override methods without breaking intraclass method calls. Consider the following code snippet: 
+
+```
+# We expect the following to create a class that has one instance variable, this 
+# variable is assigned to by the update method defined in the class when an 
+# instance is created. This class has one function (update), that appends items 
+# in the iterable given to the class to the unassignable instance variable.  
+class Mapping:
+    def __init__(self, iterable):
+        self.items_list = []
+        self.__update(iterable)
+
+    def update(self, iterable):
+        for item in iterable:
+            self.items_list.append(item)
+
+    __update = update   # private copy of original update() method
+
+    # Should still work even after subclass redefines update
+    def update_twice(self, iterable):
+        self.__update(iterable)
+        self.__update(iterable)
+
+# This is a derived class of the Mapping class that has a different update 
+# method. This new method takes two arguments, keys and values, zips them and 
+# then appends them to the instance variable. Even though MappingSubClass 
+# redefines update, it doesn't break __init__(), as when init calls __update 
+# it refers to its private copy of the original update() method
+class MappingSubclass(Mapping):
+
+    def update(self, keys, values):
+        # provides new signature for update()
+        # but does not break __init__()
+        for item in zip(keys, values):
+            self.items_list.append(item)
+
+class MappingSubClassThatChangesNothing(Mapping):
+    pass
+
+# The following should create an instance of the Mapping object and then update 
+# its items_list, and then print its items list
+x = Mapping([0])
+
+x.update([1,2,3])
+
+print(x.items_list)
+
+# The following should create an instance of the MappingSubClass object and 
+# then update its items_list, and then print its items list
+y = MappingSubclass([(0,0)])
+
+y.update([1,2,3], [3,2,1])
+
+print(y.items_list)
+
+# The following should call the update_twice() function on a MappingSubClass 
+# instance which will refer to the original update function
+y.update_twice([1,2,3])
+
+print(y.items_list)
+
+# The following should use the original update function
+i = MappingSubClassThatChangesNothing([0])
+
+i.update([3,2,1])
+
+print(i.items_list)
+```
+
+We see we get what we expect. `__update` is referenced in the `__init__` statement of any derived class of `Mapping`, but even if we redefine `__update` in our derived class, this will not stop our `__init__` statement from executing correctly as it refers to a private copy of the `update()` function. 
+
+Similarly if we have other defined methods that use our private `update()` function, if we use these methods on an instance of `MappingSubClass` the original `update()` function will be used. 
+
+Finally, if we have other derived classes from our original class, we can just use the `update()` method without the underscores. 
+
+In effect, if we want inherited classes to use their versions of `update()` we shouldn't use private name mangling, but if we want their versions to use the original `update()` we should use private name mangling. 
+
