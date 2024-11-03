@@ -34,5 +34,24 @@
 
 # # We get what we expect!
 
-# # Experiments with Instances
+# # # Experiments with Functions in Instances
+
+# # The following should define three functions of the class C
+# def f1(self, x, y):
+#     return min(x, x+y)
+
+# class C:
+#     f = f1
+
+#     def g(self):
+#         return 'hello world'
+
+#     h = g
+
+# x = C()
+
+# # We expect the following to give us three methods
+# print(type(x.f), type(x.g), type(x.h))
+
+# # We get what we expect!
 

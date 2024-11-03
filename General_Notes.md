@@ -1492,5 +1492,60 @@ print(x.data, x.string, x.truth)
 
 `x` is an instantiated object of the type of our class `FooBar`. This operation creates an empty object (with the attributes that the class has), many classes like to create instances that are customized to a specific initial state. We therefore allow classes to define a special method named `__init__()` like in the code snippet above. 
 
+In the example above all instance variables can be set by the client of the class when they instantiate instances, but one might not want to allow this if they want methods to accept arguments that are instance variables that the client does not give to the instance (for example, if we wanted to locally store and track some counter of total method calls for an instance, there is no reason why we would want the client to be able to set or change this variable). Having naming conventions is important here, as if the client uses the same name for a new attribute for the instance they want it will override the instance variables that the class dictates. 
+
 ### Instance Objects
+
+The only operations possible for instance objects are attribute references. These can be data attributes or methods. You can create new data attributes by using the normal `obj.name = data` format, where the object is the instance of the class. 
+
+You can only reference methods that already belong to the object. 
+
+### Method Objects
+
+Usually methods are called right after it is bound. This is not necessary as you can name the method object and only call it later. 
+
+When methods are called, the function defined in the class is called first, and then the instance object is passed to the function as the first argument along with the rest of the arguments given by the method call. 
+
+When a non-data attribute of an instance is referenced, the instance's class is searched. If the name denotes a valid class attribute that is a function object, referneces to both the instance object and the function object are packed into a method object. When the method object is called with an argument list, a new argument list is constructed from the instance object and the argument list, and the function argument is called with this new argument list. 
+
+### CLass and Instance Variables
+
+Generally instance variables are for data unique to each instance and class variables are for attributes and methods shared by all instances of the class. 
+
+Using mutable objects as class variables is dangerous, as if those mutable objects are changed the class variable changes for all instance variables of that class. 
+
+### Random Remarks
+
+If the same attribute name is present in both the instance's namespace and the class's namespace the instance's namespace is prioritized when referencing that name. 
+
+There is no shorthand for referencing data attributes from within methods. The first argument of a method is called `self`, which is a convention that helps code be more readable to other Python programmers. 
+
+Any function object that is a class attribbute defines a method for instances of that class. It is not necessary that the function be textually created in the class definition. Assigning a function to a local object in a class is also acceptable. Consider the following code snippet: 
+
+```
+# The following should define three functions of the class C
+def f1(self, x, y):
+    return min(x, x+y)
+
+class C:
+    f = f1
+
+    def g(self):
+        return 'hello world'
+
+    h = g
+
+x = C()
+
+# We expect the following to give us three methods
+print(type(x.f), type(x.g), type(x.h))
+```
+
+We see we get what we expect. `f`, `g`, and `h`, are all methods. 
+
+Methods may call other methods by using method attributes of the `self` argument. 
+
+Methods may reference global names in the same way as ordinary functions. The global scope associated with a method is the module containing its definition. (A class is never used as a global scope.) While one rarely encounters a good reason for using global data in a method, there are many legitimate uses of the global scope: for one thing, functions and modules imported into the global scope can be used by methods, as well as functions and classes defined in it. Usually, the class containing the method is itself defined in this global scope, and in the next section we’ll find some good reasons why a method would want to reference its own class.
+
+### Inheritance 
 
