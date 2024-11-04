@@ -124,3 +124,101 @@
 
 # # We get what we expect! 
 
+# # # Experiments with dataclasses
+
+# from dataclasses import dataclass
+
+# # Should create a class that bundles pieces of data
+# @dataclass
+# class Employee:
+#     name: str
+#     dept: str
+#     salary: int
+
+# # Should create an instance of this class and then call its attributes
+# blorb = Employee("blorb", "glorbology", 5000000000)
+
+# print(blorb.dept, blorb.salary)
+
+# # We get what we expect
+
+# # # Experiments with next()
+
+# # Should establish a container that can be iterated over
+# s = 'abc'
+
+# # Should establish it as an iterator object
+# it = iter(s)
+
+# print(it)
+
+# # Should print the returns objects from the next() function
+# print(next(it))
+
+# print(next(it))
+
+# print(next(it))
+
+# # Should return the StopIteration exception
+# print(next(it))
+
+# # We get what we expect! 
+
+# # # Experiments with implementing __iter__() in classes
+
+# # Should create a class than has its own iterator behavior
+# class Reverse:
+#     """Iterator for looping over a sequence backwards."""
+#     def __init__(self, data):
+#         self.data = data
+#         self.index = len(data)
+
+#     # Establishes iter behavior, but since we define __next__() we only need to 
+#     # return self
+#     def __iter__(self):
+#         return self
+
+#     # Establishes next behavior. As self.index starts at len() we start by 
+#     # decreasing the index by one (so that when the index is called it will 
+#     # return the last value of the container), and then we return the value at 
+#     # that index. When our index is 0 we raise the StopIteration exception 
+#     # (as that means we have already returned the value indexed at 0)
+#     def __next__(self):
+#         if self.index == 0:
+#             raise StopIteration
+#         self.index = self.index - 1
+#         return self.data[self.index]
+
+# # We expect the following to create a sequence object with the iterator defined 
+# # to iterate inversely, and then we expect the for loop to print this reversed 
+# # order
+# r = Reverse("truth")
+
+# for char in r:
+#     print(char)
+
+# # We get what we expect!
+
+# # # Experiments with Generators
+
+# # We expect the following to create a generator function. This function will 
+# # return values according to its yield statement which allows for easy creation 
+# # of complex iteration procedures
+# def reverse(data):
+#     # This for loop starts at the final index of our sequence type, and ends 
+#     # at -1 (meaning that it will evaluate at index 0), with a step of -1
+#     for index in range(len(data)-1, -1, -1):
+#         yield data[index]
+
+# # We expect this loop to print the list in reverse
+# for n in reverse([1,3,3,5,1,23,5]):
+#     print(n)
+
+# # We get what we expect
+
+# # Experiments with Generator Expressions
+
+# We expect the following to return the sum of the odd numbers in the list
+print(sum(i for i in range(0, 100, 7) if i % 2 == 1))
+
+# We get what we expect!

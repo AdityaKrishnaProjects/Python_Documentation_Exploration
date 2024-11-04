@@ -1677,3 +1677,126 @@ Finally, if we have other derived classes from our original class, we can just u
 
 In effect, if we want inherited classes to use their versions of `update()` we shouldn't use private name mangling, but if we want their versions to use the original `update()` we should use private name mangling. 
 
+### Odds and Ends
+
+The way to bundle together a few items of data in python is to import `dataclasses`. This is similar to the Pascal "record", or C "struct". The syntax is shown in the following code snippet: 
+
+```
+from dataclasses import dataclass
+
+# Should create a class that bundles pieces of data
+@dataclass
+class Employee:
+    name: str
+    dept: str
+    salary: int
+
+# Should create an instance of this class and then call its attributes
+blorb = Employee("blorb", "glorbology", 5000000000)
+
+print(blorb.dept, blorb.salary)
+```
+
+We see we get what we expect. 
+
+### Iterators 
+
+In Python most container objects can be looped over using a `for` statement. This is done in the following steps: 
+
+The `for` statement calls `iter()` on the container object. Then the function returns an iterator object that defines the method `__next__()` which accesses elements in the container one at a time. When there are no more elements, `__next__()` raises a `StopIteration` exception which tells the `for` loop to terminate. You can call the `__next__()` method using the `next()` built in function. Consider the following code snippet: 
+
+```
+# Should establish a container that can be iterated over
+s = 'abc'
+
+# Should establish it as an iterator object
+it = iter(s)
+
+print(it)
+
+# Should print the returns objects from the next() function
+print(next(it))
+
+print(next(it))
+
+print(next(it))
+
+# Should return the StopIteration exception
+print(next(it))
+```
+
+We see we get what we expect. 
+
+Having seen the mechanics behind the iterator protocol, it is easy to add iterator behavior to your classes. Define an `__iter__()` method which returns an object with a `__next__()` method. If the class defines `__next__()`, then `__iter__()` can just return self:
+
+```
+# Should create a class than has its own iterator behavior
+class Reverse:
+    """Iterator for looping over a sequence backwards."""
+    def __init__(self, data):
+        self.data = data
+        self.index = len(data)
+
+    # Establishes iter behavior, but since we define __next__() we only need to 
+    # return self
+    def __iter__(self):
+        return self
+
+    # Establishes next behavior. As self.index starts at len() we start by 
+    # decreasing the index by one (so that when the index is called it will 
+    # return the last value of the container), and then we return the value at 
+    # that index. When our index is 0 we raise the StopIteration exception 
+    # (as that means we have already returned the value indexed at 0)
+    def __next__(self):
+        if self.index == 0:
+            raise StopIteration
+        self.index = self.index - 1
+        return self.data[self.index]
+
+# We expect the following to create a sequence object with the iterator defined 
+# to iterate inversely, and then we expect the for loop to print this reversed 
+# order
+r = Reverse("truth")
+
+for char in r:
+    print(char)
+```
+
+We see we get what we expect. 
+
+### Generators 
+
+Gemerators can be used to create iterators. They use the `yield` statement to return data. Each time `next()` is called on this function the generator resumes where it left off (it remembers all data values and which statement was last executed). Consider the following code snippet: 
+
+```
+# We expect the following to create a generator function. This function will 
+# return values according to its yield statement which allows for easy creation 
+# of complex iteration procedures
+def reverse(data):
+    # This for loop starts at the final index of our sequence type, and ends 
+    # at -1 (meaning that it will evaluate at index 0), with a step of -1
+    for index in range(len(data)-1, -1, -1):
+        yield data[index]
+
+# We expect this loop to print the list in reverse
+for n in reverse([1,3,3,5,1,23,5]):
+    print(n)
+```
+
+We see we get what we expect. Anything that can be done with generators can also be done with class-based iterators as described in the previous section. 
+
+A key feature of generators is that the local variables and execution state are automatically saved between calls. This made the function easier to write and much more clear than an approach using instance variables like `self.index` and `self.data`. In addition to automatic method creation and saving program state, when generators terminate, they automatically raise `StopIteration`.
+
+### Generator Expressions
+
+Can be constructed similar to list comprehensions. Are generally more memory-friendly than equivalent list comprehensions. Consider the following code snippet: 
+
+```
+# We expect the following to return the sum of the odd numbers in the list
+print(sum(i for i in range(0, 100, 7) if i % 2 == 1))
+```
+
+We see we get what we expect. 
+
+## Module 10 - Brief Tour of the Standard Library
+
