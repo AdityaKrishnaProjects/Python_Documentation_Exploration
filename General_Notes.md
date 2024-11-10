@@ -1802,3 +1802,117 @@ We see we get what we expect.
 
 ### Operating System Interface
 
+The `os` module provides many functions for interacting with the operating system. One should not import all methods in `os` as then `os.open()` will overshadow the built-in `open()` function. 
+
+### File Wildcards
+
+The `glob` module provides a function for making lists from directory wildcard searches. 
+
+### Command Line Arguments
+
+Common utility scrips often need to process command line arguments. These arguments are stored in the `sys` module's `argv` attribute as a list. 
+
+### Error Output Redirection and Program Termination
+
+The `sys` module has attributes for `stdin`, `stdout`, and `stderr`. The latter is useful for emitting warnings and error messages to make them visible even when `stdout` has been redirected. THe most direct way to terminate a script is to use `sys.exit()`. 
+
+### String Pattern Matching
+
+The `re` module provides regular expression tools for advanced string processing. For complex matching and manipulation, regular expressions offer succinct, optimized solutions. Consider the following code snippet: 
+
+```
+import re
+
+# The following could should search for words starting with f that end with any 
+# sequence of characters
+match_f = re.findall(r'\bf[a-z]*', 'Throwing Friday fun into four patterned suits')
+
+print(match_f)
+
+# The following could should replace pairs of duplicate words with the first 
+# element in the pair
+remove_dupe = re.sub(r'(\b[a-z]+) \1', r'\1', 'Trees on the the porch eating while others play knock knock jokes')
+
+print(remove_dupe)
+```
+
+We see we get what we expect. 
+
+### Mathematics 
+
+The `math` module gives access to the underlying C library functions for floating point math. The `random` module provides tools for making random selections. The `statistics` module calculates basic statistical properties. Consider the following code snippet: 
+
+```
+import math
+import statistics
+import random
+
+# The following code should generate random samples from 1 to 100, then 
+# calculate the area of circles with that radius and then give the average of 
+# their areas. 
+
+def circle_area(radius):
+    """ This function should calculate the area of a circle given its radius 
+    """
+
+    area = math.pi*(radius**2)
+
+    return area
+
+# The following should generate a 100 value list of randomly sampled integers 
+# from 1 to 100, and then should pass this list to the area function defined 
+# above to get the area of circle with radius equal to the randomyl sampled 
+# integers, and then it should take the mean of these values  
+avg_area = statistics.mean(circle_area(x) for x in random.sample(range(1,101),100))
+
+print(avg_area)
+```
+
+We see we get what we expect. Consider using `scipy` for other modules for numerical computations. 
+
+### Internet Access
+
+There are a number of modules for accessing the internet and processing internet protocols. Two of the simplest are `urllib.request` for retrieving data from URLs and `smtplib` for sending mail. 
+
+### Dates and Times
+
+The `datetime` module supplies classes for manipulating dates and times in both simple and complex ways. This module supports objects that are timezone aware. 
+
+### Data Compression
+
+Common data archiving and compression formats are directly supported by modules including: `zlib`, `gzip`, `bz2`, `lzma`, `zipfile` and `tarfile`. 
+
+### Performance Measurement
+
+The `timeit` module allows one to test how long certain snippets take to execute. `profile` and `pstats` provide tools for identifying time critical sections in larger blocks of code. 
+
+### Quality Control
+
+One approach for developing high quality software is to write tests for each function as it is developed and to run those tests frequently during the development process. The `doctest` module provides a tool for scanning a module and validating tests embedded in a programs doc-strings. Test construction is as simple as cutting-and-pasting a typical call along with its results into the docstring. Consider the following code snippet: 
+
+```
+import doctest
+
+def average(values):
+    """ Computes the mean of a list of numbers
+
+    >>> print(average([23,591,5891]))
+    2168.3333333333335
+    """
+
+    return (sum(values)/len(values))
+    
+# The following should test the function, and then return no errors
+doctest.testmod()
+```
+
+We see we get what we expect. The `unittest` module is not as simple, but allows for a more comprehensive set of tests to be maintained in a separate file. 
+
+### Batteries Included
+
+Python has a "Batteries Included" philosophy. This means packages are comprehensive, robust and work as you would expect them to without requiring much intervention from the user. 
+
+## Module 11 - Brief Tour of the Standard Library — Part II
+
+### Output Formatting
+
