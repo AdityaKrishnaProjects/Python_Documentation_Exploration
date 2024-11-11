@@ -1916,3 +1916,79 @@ Python has a "Batteries Included" philosophy. This means packages are comprehens
 
 ### Output Formatting
 
+The `reprlib` module provides a version of `repr()` customized for abbreviated displays of large containers. Consider the following code snippet:
+
+```
+import reprlib
+
+i = set("aoueq9gfp9qEFHPEQFYGH9PHUFODSBVPDisbfibfpbp;")
+
+# The following should print the full contents of the container object
+print(repr(i))
+
+# The following should do the same, but abbreviate the contents
+print(reprlib.repr(i))
+```
+
+We see we get what we expect. 
+
+The `pprint` module offers more sophisticated control over printing both built-in and user defined objects in a way that is readable. The `textwrap` module formats paragraphs of text to fit a given screen width. The `locale` module accesses a database of culture specific data formats. 
+
+### Templating
+
+The `string` module includes a versatile `Template` class with a simplified syntac suitable for editing by end-users. This allows users to customie their applications without having to alter the application. 
+
+The format uses placeholder names formed by `$` with valid Python identifiers (alphanumeric characters and underscores). Surrounding the placeholder with braces allows it to be followed by more alphanumeric letters with no intervening spaces. Writing `$$` creates a single escaped `$`. Consider the following code snippet: 
+
+```
+from string import Template
+
+# We expect the following to create a template that can be substituted into 
+# using the substitute() method
+t = Template("$country_one is in conflict with ${country_two}'s people over $$1.")
+
+# We expect the following to substitute in the two values and then print the 
+# string
+print(t.substitute(country_one="Iran", country_two="France"))
+```
+
+We see we get what we expect. `substitute()` raises a `KeyError` when a placeholder is not supplied in a dictionary or kwarg. If this is likely, the `safe_substitute()` method may be more appropriate, it will leave placeholders unchanged if data is missing. 
+
+### Using the `struct` module
+
+This module converts between Python values and C structs represented as Python bytes objects. Compact format strings describe the intended conversions to/from Python values. The module’s functions and objects can be used for two largely distinct applications, data exchange with external sources (files or network connections), or data transfer between the Python application and the C layer.
+
+### Multi-threading
+
+Threading is a technique for decoupling tasks that are not sequentially dependent. 
+
+The principal challenge of multi-threaded applications is coordinating threads that share data or other resources. To that end, the threading module provides a number of synchronization primitives including locks, events, condition variables, and semaphores.
+
+While those tools are powerful, minor design errors can result in problems that are difficult to reproduce. So, the preferred approach to task coordination is to concentrate all access to a resource in a single thread and then use the `queue` module to feed that thread with requests from other threads. Applications using `Queue` objects for inter-thread communication and coordination are easier to design, more readable, and more reliable.
+
+### Logging
+
+The `logging` module offers a full featured and flexible logging system. At its simplest, log messages are sent to a file or to `sys.stderr`.
+
+### Weak References
+
+Python does automatic memory management (reference counting and garbage collection). This is normally fine, but some applications want to track objects so long as they are being used by something else, and this tracking creates a reference that makes them permanent. The `weakref` module provides tools for tracking objects without creating a reference. 
+
+### Tools for Working with Lists
+
+The `array` module provides an `array` object that is like a list, but only stores homogenous data and stores it more compactly. 
+
+The `collections` module provides a `deque` object that is like a list with faster appends and pops from the left side but slower lookups in the middle. These objects are well suited for implementing queues and breadth first tree searches.
+
+The `bisect` module has functions for manipulating the middle of sorted lists. 
+
+The `heapq` module provides functions for implementing heaps based on regular lists. This is useful for applications which repeatedly access the smallest element but do not want to run the full list sort. 
+
+### Decimal Floating-Point Arithmetic 
+
+The `decimal` module offers a `Decimal` datatype for decimal floating-point arithmetic. 
+
+## Virtual Enviroments and Packages
+
+### Introduction
+
