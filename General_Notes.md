@@ -1992,3 +1992,29 @@ The `decimal` module offers a `Decimal` datatype for decimal floating-point arit
 
 ### Introduction
 
+Virtual environments allow you to work with applications that have conflicting requirements for what version of Python they demand. A virtual environment is a self contained directory tree that contains a Python installation for a particular version of Python, plus a number of additional packages. 
+
+### Creating Virtual Environments
+
+The module used to create and manage virtual environments is called `venv`. 
+
+### Managing Packages with pip
+
+You can install, upgrade and remove packages using a program called `pip`. By default, `pip` will install packages from the [Python Package Index](https://pypi.org/). 
+
+You can install the latest version by specifying a package's name, you can install a specific version by following the name by `==` and the version number. 
+
+You can upgrade packages by running `python -m pip install --upgrade` followed by the packages name. If you do not do this and try to install the package again `pip` will notice the package is already installed and do nothing. 
+
+You can remove packages using `uninstall` after `python -m pip`. 
+
+You can use `show` after `python -m pip` to get infromation about a particular package.
+
+You can list all packages currently installed and their versions using `python -m pip list`. You can get a similar result using `python -m pip freeze`, but this will return the output in the format `python -m pip install` expects. It is common to put this in a `requirements.txt` file, then commit this file and ship it as part of the application. Users can then install the necessary packages with `python -m pip install -r` followed by `requirements.txt`. 
+
+## Module 14 Interactive Input Editing and History Substitution
+
+Some versions of the Python interpreter support editing of the current input line and history substitution, similar to facilities found in the Korn shell and the GNU Bash shell. This is implemented using the GNU Readline library, which supports various styles of editing. Interactive editors like `ipython` (the backbone of Jupyter notebooks) offer a lot of the more quality of life interactive editing that one may want. 
+
+## Floating-Point Arithmetic: Issues and Limitations
+
