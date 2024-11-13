@@ -2018,7 +2018,50 @@ Some versions of the Python interpreter support editing of the current input lin
 
 ## Floating-Point Arithmetic: Issues and Limitations
 
+### Floating Point Calculations
+
 Floating-point numbers are represented in computer hardware as base 2 (binary) fractions. For example, the decimal fraction 0.625 has value 6/10 + 2/100 + 5/1000, and in the same way the binary fraction 0.101 has value 1/2 + 0/4 + 1/8. These two fractions have identical values, the only real difference being that the first is written in base 10 fractional notation, and the second in base 2.
 
 Unfortunately, most decimal fractions cannot be represented exactly as binary fractions. A consequence is that, in general, the decimal floating-point numbers you enter are only approximated by the binary floating-point numbers actually stored in the machine.
 
+Stop at any finite number of bits, and you get an approximation. On most machines today, floats are approximated using a binary fraction with the numerator using the first 53 bits starting with the most significant bit and with the denominator as a power of two. This means that a number like 0.1 or 1/10 is actually 0.1000000000000000055511151231257827021181583404541015625, but since that is too long Python displays it as 0.1. This representation is just a representation, the real object that it references is the unrounded number above. 
+
+There are many decimal numbers that share the nearest approximate binary fraction, for example 0.1 and 0.10000000000000001 and 0.1000000000000000055511151231257827021181583404541015625 are all approximated by 3602879701896397 / 2 ** 55. Historically, the Python prompt and built-in `repr()` function would choose the one with 17 significant digits, 0.10000000000000001. Starting with Python 3.1, Python (on most systems) is now able to choose the shortest of these and simply display 0.1. Consider the following code snippet to see the consequence of this:
+
+```
+import math
+
+# We expect the following to be false
+print("0.1 + 0.1 + 0.1 == 0.3 is", 0.1 + 0.1 + 0.1 == 0.3)
+
+# We expect the following to be false
+print("round(0.1, 1) + round(0.1, 1) + round(0.1, 1) == round(0.3, 1) is", round(0.1, 1) + round(0.1, 1) + round(0.1, 1) == round(0.3, 1))
+
+# We expect the following to be true
+print("math.isclose(0.1 + 0.1 + 0.1, 0.3) is", math.isclose(0.1 + 0.1 + 0.1, 0.3))
+
+# We expect the following to be true
+print("round((0.1 + 0.1 + 0.1), 1) == round(0.3, 1) is", round((0.1 + 0.1 + 0.1), 1) == round(0.3, 1))
+```
+
+We see we get what we expect. Even after using rounding, the rounding doesn't actually change the value of the function, it just changes the representation delivered. To get the intended result you must round the result of the operation. 
+
+Using `numpy` and `scipi` is likely better if you want precision from floating point operations. 
+
+The `float.as_integer_ratio()` method expresses the value of a float as a fraction. The `float.hex()` method expresses a float in hexadecimal (base 16), again giving the exact value stored by your computer.
+
+### Representation Errors
+
+Representation errors refer to the fact that decimal fractions can not be represented exactly as binary fractions. The IEE 752 binary floating point arithmetic standard has values that contain 53 bits of precision (integers containing exactly 53 bits) as the mantissa. Consider the following code snippet: 
+
+```
+from decimal import Decimal
+
+# We expect the following to be true
+print(0.333333333333333314829616256247390992939472198486328125 == 1/3)
+
+# We expect the following to be true
+print(0.333333333333333314829616256247390992939472198486328125 == Decimal.from_float(1/3))
+```
+
+We see we get what we expect. This process starts by equating 1/3 to J/(2^N). We can then reformulate this as (2^N)/3 = J. We know that J must be greater than 2^52 but less than 2^53 (as it must be representable in 53 bits). This gives us the value of N, which in this case is 54. Then we get the quotient and remainder of 2^54/3 to get the value of J. If the remainder is 0 the quotient is the exact value of J, if it is less than 5 our quotient is J (which will result in our approximation being slightly smaller than 1/3), if it is less than 5 we add one to our quotient to get J (but this will result in our approximation being slightly larger than 1/3). We then store our decimal representation as 6004799503160661/2^54. 
